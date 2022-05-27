@@ -1,0 +1,7 @@
+{
+  "name": "co2App",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
