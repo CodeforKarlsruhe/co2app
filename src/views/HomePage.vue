@@ -529,7 +529,15 @@ export default defineComponent({
       for (let url in urls) {
         console.log(urls[url])
         try {
-            const data = code ? {code:code,msg:"abc"} : {msg:"abc"}
+            const data:any = {}
+            data.msg = "CO2App"
+            if (code) data.code = code
+            // dummy id
+            const id = "dummy"
+            if (id) data.id = id
+            data.co2total = this.co2total
+            data.co2parms = this.co2parms
+            data.location = {district:this.district,mult:this.mult}
             const r = await axios.request({"method":"post","url":urls[url],
               "headers":postConfig.headers,
               "data":JSON.stringify(data)
@@ -572,14 +580,18 @@ export default defineComponent({
       const ha = this.sect1.renew ? .00418 : .0418
       const hb = this.sect1.eco ? .2 : .745
       const h = this.sect1.size * ha + hb 
+      this.co2parms.sector1 = {value:h,parms:this.sect1}
+
       // mobility
       var m = 2.16
       if (this.sect2.nocar) m -= 1.5 
       if (this.sect2.freqfly) m += 3 
+      this.co2parms.sector2 = {value:m,parms: this.sect2}
       // food
       var f = 1.69
       if (this.sect3.nomeat) f -= .5
       if (this.sect3.muchmeat) f += .5
+      this.co2parms.sector3 = {value:f,parms:this.sect3}
       // consumption
       var cbudget = 2000
       var coffs = .95
@@ -595,8 +607,10 @@ export default defineComponent({
         coffs -= .7
       }
       const c = 1.25 * cbudget/1000 + coffs
+      this.co2parms.sector4 = {value:c,parms:this.sect4}
       // public
       const p = .84
+      this.co2parms.sector5 = {value:p,parms:{}}
       // total
       const co2 = h + m + c + f + p
       // finally round
@@ -622,6 +636,7 @@ export default defineComponent({
    data() {
       return {
         co2total: 0,
+        co2parms: {sector1:{},sector2:{},sector3:{},sector4:{},sector5:{},sector6:{}},
         /*
         chk: {val: "Chk", isChecked: true },
         form: [
