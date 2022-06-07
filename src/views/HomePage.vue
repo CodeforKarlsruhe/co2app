@@ -218,35 +218,7 @@
     <ion-card class="card-md">
       <ion-card-header>
         <ion-card-title>Weitersagen</ion-card-title>
-        <ion-card-subtitle>Können Sie Mitstreiter gewinnen?</ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content>
-        <ion-text>
-          <p>Schätzen Sie, wieviele Menschen Sie von Ihrem CO2-Sparmodell überzeugen können
-            
-          </p>
-        </ion-text>
-          <ion-item>
-            <ion-range 
-              min="0" 
-              max="64" 
-              color="secondary"
-              :modelValue="mult"
-              @update:modelValue="mult = $event"
-            >
-              <!--ion-label slot="start">0</ion-label-->
-              <ion-label slot="end">{{ mult }}</ion-label>
-            </ion-range>
-            <!--ion-label>{{ mult }}</ion-label-->
-          </ion-item>
-
-       </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Auswerten</ion-card-title>
+        <ion-card-subtitle>Können Sie in Ihrem Stadtteil Mitstreiter gewinnen?</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content v-if="districtsLoaded">
@@ -278,13 +250,48 @@
 
         <ion-card-content>
         <ion-text>
-          <p>Im Bergleich zum Durchschnitt sind Sie um .... besser/schlechter</p>
+          <p>Können Sie weitere Menschen in Ihrem Stadtteil davon überzeugen,
+          genauso viel CO2-Einsparungen zu erreichen? Dann geben Sie hier eine Zahl ein. 
+          </p>
         </ion-text>
-          Keep close to Nature's heart... and break clear away, once in awhile,
-          and climb a mountain or spend a week in the woods. Wash your spirit clean.
-          <ion-img src="/img/logo.svg" class="logo"></ion-img>
+          <ion-item>
+            <ion-range 
+              min="0" 
+              max="50" 
+              color="secondary"
+              :modelValue="mult"
+              @update:modelValue="mult = $event"
+            >
+              <!--ion-label slot="start">0</ion-label-->
+              <ion-label slot="end">{{ mult }}</ion-label>
+            </ion-range>
+            <!--ion-label>{{ mult }}</ion-label-->
+          </ion-item>
+
+       </ion-card-content>
+    </ion-card>
+
+    <ion-card  class="card-md">
+      <ion-card-header>
+        <ion-card-title>Auswerten</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+        <ion-text>
+          <p>Ihr Vergleich zum Durchschnitt: {{ performance }}</p>
+        </ion-text>
+        <ion-item>
+          <ion-img slot="start" src="/img/logo.svg" href="https://ok-lab-karlsruhe.de" class="appdesign" alt="OK Lab Karlsruhe"></ion-img>
+          <ion-label>App-Design: <a href="https://ok-lab-karlsruhe.de" target="_blank">OK Lab Karlsruhe</a></ion-label>
+        </ion-item>
         </ion-card-content>
 
+      <ion-card-header>
+      <ion-card-subtitle>Mitmachen</ion-card-subtitle>
+      Senden Sie Ihre Angaben ab für <em>
+      CO2 runter – mein Beitrag für KA</em>
+      </ion-card-header>
+      
       <ion-card-footer>
       <ion-row>
       <ion-col size="6">
@@ -406,6 +413,20 @@ export default defineComponent({
     IonIcon,
     IonSelect,IonSelectOption,
 
+  },
+  computed: {
+    performance() {
+      let p = ""
+      if (this.co2total == this.co2baseline) {
+          p =  " genau gleich"
+      } else 
+        if (this.co2total < this.co2baseline) {
+          p =  "um " + String(Math.round((1 - this.co2total / this.co2baseline) * 10000) / 100)  + "% besser"
+        } else {
+          p = " um " + String(Math.round((this.co2total / this.co2baseline - 1) * 10000) / 100)  + "% schlechter"
+        }
+      return p
+    }
   },
    methods: {
     async presentAlert(e: any,msg = 'This is an alert message.') {
@@ -722,6 +743,7 @@ export default defineComponent({
      this.computeCo2()
    },
    setup() {
+    const co2baseline = 10.98
     const sect1 = ref({size:50,renew:false,eco:false})
     const sect2 = ref({nocar: false,freqfly: false})
     const sect3 = ref({nomeat:false, muchmeat:false})
@@ -732,7 +754,7 @@ export default defineComponent({
     const districtsLoaded = ref(false)
     const districtOptions = ref()
     const mult = ref(0)
-    return { sect1, sect2, sect3, sect4, mult, axImg, district, districts, districtsLoaded }
+    return { co2baseline, sect1, sect2, sect3, sect4, mult, axImg, district, districts, districtsLoaded }
    }
 });
 </script>
@@ -788,6 +810,15 @@ export default defineComponent({
   width: 100%;
   padding: 0;
   object-position: left;
+}
+
+.appdesign {
+  height: 3rem;
+  /*
+  width: 100%;
+  padding: 0;
+  object-position: left;
+  */
 }
 
 .headlineContainer {
