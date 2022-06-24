@@ -44,15 +44,47 @@
           <p>
           Die zwei Aspekte zeigt spielerisch diese App, die auf dem persönlichen CO2 Rechner 
           des Bundesumweltamtes basiert und für diese Aktion vereinfacht wurde.
-          In dieser Klima-Challenge werden nicht nur die persönlichen Ambitionen zum Klimaschutz gezeigt, 
-          sondern auch die Einsparungen, die erreicht werden können, wenn wir noch andere Menschen in 
-          unserem Umfeld für den Klimaschutz begeistern. 
-          Persönliche Maßnahmen für den Klimaschutz werden umso erfolgreicher, wenn wir auch andere Menschen davon überzeugen.
           </p>
 
           <p>
-            Die 5 Sektoren.
+          Laut Energiebilanz Karlsruhe 2019 liegt der pro Kopf CO2 Ausstoß bei 7,8t jährlich. 
+          Diese Zahl enthält nicht den CO2 Ausstoß durch privaten Konsum. Addiert man hier den Grundwert (3,5t) gemäß 
+          vereinfachtem UBA-Modell, dann erhält man 11,3t CO2. Dies entspricht ungefähr der Grundwert-Summe der CO2APP (11t CO2).
           </p>
+          <p>
+          Diese Grundwert-Summe bildet sich aus 4 "Sektoren", die wir durch unseren Lebensstil 
+          beinflussen können (plus einer Zugabe für "Sonstiges").
+          </p>
+          <p>
+            <ul>
+              <li>
+                Heizen und Strom
+              </li>
+              <li>
+                Mobilität
+              </li>
+              <li>
+                Ernährung
+              </li>
+              <li>
+              Allgemeiner Konsum
+              </li>
+            </ul>
+          </p>
+          <p>
+          Die verwendeten Daten und Berechnungsmodelle sind an den CO2-Rechner des Umweltbundesamts angeleht und
+           wollen die qualitativen Effekte zeigen, die wir durch sparsamen oder weniger sparsamen Lebensstil erreichen können. 
+           Eine exakte Berechnung ist ohne weitere Informationen über die persönliche SItuation im Einzelfall nicht möglich.
+          </p>
+          <p>
+          Persönliche Maßnahmen für den Klimaschutz werden umso erfolgreicher, wenn wir auch andere Menschen davon überzeugen.
+          Geben Sie Ihren Stadtteil an und die Anzahl der Personen, die sie dort als Mitstreiter:Innen gewinnen können 
+          und nehmen Sie so an der Klima-Challenge teil. Die aktuellen Ergebnisse sind auf unserem CO2-Dashboard sichtbar.
+          </p>
+          <p>
+            Im Kanal "Grüne Stadt" der Karlsruhe-App wird das Umweltamt das Projekt weiter verfolgen.
+          </p>
+
           <ion-text color="primary">Ganz unten sehen Sie immer die aktuelle Berechnung</ion-text>          
         </ion-card-content>
     </ion-card>
@@ -299,20 +331,25 @@
     
       <ion-card-footer>
       <ion-button expand="block" class="submit" @click="submit">Abschicken</ion-button>
+      <ion-button expand="block" fill="outline" class="routelink" href="https://www.karlsruhe.de/impressum.de">Impressum</ion-button>
 
       <ion-row>
-      <ion-col size="6">
-        <ion-item justify-content-center>
-          <ion-img slot="start" src="/img/logo.svg" href="https://ok-lab-karlsruhe.de" class="appdesign" alt="OK Lab Karlsruhe"></ion-img>
-          <ion-label>App-Design: <a href="https://ok-lab-karlsruhe.de" target="_blank">OK Lab Karlsruhe</a></ion-label>
-        </ion-item>
-      </ion-col>
-      <ion-col size="6">
-      <!-- https://www.karlsruhe.de/impressum.de -->
-      <!--ion-button expand="block" fill="outline" class="routelink" router-link="/imprint">Impressum</ion-button-->
-      <ion-button expand="block" fill="outline" class="routelink" href="https://www.karlsruhe.de/impressum.de">Impressum</ion-button>
+      <ion-col size="12">
+        <div class="ion-text-center">
+          App-Design
+        </div>
       </ion-col>
       </ion-row>
+
+      <ion-row>
+      <ion-col size="8" offset="2">
+          <div class="ion-text-center">
+          <ion-img slot="start" src="/img/logo.svg" class="appdesign" alt="OK Lab Karlsruhe"></ion-img>
+          <ion-label><a href="https://ok-lab-karlsruhe.de" target="_blank">OK Lab Karlsruhe</a></ion-label>
+        </div>
+      </ion-col>
+      </ion-row>
+
       </ion-card-footer>
 
       <!--
