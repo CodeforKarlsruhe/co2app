@@ -34,14 +34,26 @@
     
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Intro</ion-card-title>
-        <ion-card-subtitle>Intro</ion-card-subtitle>
+        <ion-card-title>CO2 Runter: Mein Beitrag für KA</ion-card-title>
+        <ion-card-subtitle>Mitmach-App</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content>
-          Hier ein Einführungstext mit den Grundannahmen und der Standardkonfiguration.
-          Die 5 Sektoren.
-          <ion-text color="secondary">Ganz unten sehen Sie immer die aktuelle Berechnung</ion-text>          
+          Wie viel CO2 kann ich durch einen veränderten Lebensstil einsparen und 
+          wie viel macht es in meinem Stadtteil aus, wenn ich noch andere in meinem Umfeld davon überzeuge? 
+          <p>
+          Die zwei Aspekte zeigt spielerisch diese App, die auf dem persönlichen CO2 Rechner 
+          des Bundesumweltamtes basiert und für diese Aktion vereinfacht wurde.
+          In dieser Klima-Challenge werden nicht nur die persönlichen Ambitionen zum Klimaschutz gezeigt, 
+          sondern auch die Einsparungen, die erreicht werden können, wenn wir noch andere Menschen in 
+          unserem Umfeld für den Klimaschutz begeistern. 
+          Persönliche Maßnahmen für den Klimaschutz werden umso erfolgreicher, wenn wir auch andere Menschen davon überzeugen.
+          </p>
+
+          <p>
+            Die 5 Sektoren.
+          </p>
+          <ion-text color="primary">Ganz unten sehen Sie immer die aktuelle Berechnung</ion-text>          
         </ion-card-content>
     </ion-card>
   
@@ -274,28 +286,26 @@
     <ion-card  class="card-md">
       <ion-card-header>
         <ion-card-title>Auswerten</ion-card-title>
+        <ion-card-subtitle>
+            Ihr Vergleich zum Durchschnitt: {{ performance }}
+        </ion-card-subtitle>
         </ion-card-header>
 
-        <ion-card-content>
-        <ion-text>
-          <p>Ihr Vergleich zum Durchschnitt: {{ performance }}</p>
-        </ion-text>
-        <ion-item>
+        <ion-card-header>
+        <ion-card-title>Mitmachen</ion-card-title>
+        Senden Sie Ihre Angaben ab für <em>
+        CO2 runter – mein Beitrag für KA</em>
+        </ion-card-header>
+    
+      <ion-card-footer>
+      <ion-button expand="block" class="submit" @click="submit">Abschicken</ion-button>
+
+      <ion-row>
+      <ion-col size="6">
+        <ion-item justify-content-center>
           <ion-img slot="start" src="/img/logo.svg" href="https://ok-lab-karlsruhe.de" class="appdesign" alt="OK Lab Karlsruhe"></ion-img>
           <ion-label>App-Design: <a href="https://ok-lab-karlsruhe.de" target="_blank">OK Lab Karlsruhe</a></ion-label>
         </ion-item>
-        </ion-card-content>
-
-      <ion-card-header>
-      <ion-card-subtitle>Mitmachen</ion-card-subtitle>
-      Senden Sie Ihre Angaben ab für <em>
-      CO2 runter – mein Beitrag für KA</em>
-      </ion-card-header>
-      
-      <ion-card-footer>
-      <ion-row>
-      <ion-col size="6">
-      <ion-button expand="block" class="submit" @click="submit">Abschicken</ion-button>
       </ion-col>
       <ion-col size="6">
       <!-- https://www.karlsruhe.de/impressum.de -->
@@ -304,6 +314,7 @@
       </ion-col>
       </ion-row>
       </ion-card-footer>
+
       <!--
       <ion-card-content>
         <ion-img :src="axImg" alt="axImg" style="height:64px;"></ion-img>
