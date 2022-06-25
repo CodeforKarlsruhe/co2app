@@ -103,6 +103,8 @@
 
     <ion-card class="card-md">
       <ion-card-header>
+        <ion-card-title>Hier können Sie etwas tun:
+        </ion-card-title>
         <ion-card-subtitle>Wohnen
             <ion-icon src="/img/emoji/tent_emoji_u1f3d5.svg" size="large"></ion-icon>
         </ion-card-subtitle>
