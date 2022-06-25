@@ -43,7 +43,7 @@
           wie viel macht es in meinem Stadtteil aus, wenn ich noch andere in meinem Umfeld davon überzeuge? 
           <p>
           Die zwei Aspekte zeigt spielerisch diese App, die auf dem persönlichen CO2 Rechner 
-          des Bundesumweltamtes basiert und für diese Aktion vereinfacht wurde.
+          des <a href="https://uba.co2-rechner.de/" target=_blank>Umweltbundesamtes (UBA)</a> basiert und für diese Aktion vereinfacht wurde.
           </p>
 
           <ion-accordion-group>
@@ -55,8 +55,9 @@
                 <p>
                 Laut Energiebilanz Karlsruhe 2019 liegt der CO2 Ausstoß bei 7,8t jährlich pro Kopf. 
                 Die Effekte durch privaten Konsum sind dabei nicht enthalten.
-                Addiert man hier den Grundwert (3,5t) gemäß 
-                vereinfachtem UBA-Modell, dann erhält man 11,3t CO2. Dies entspricht ungefähr der Grundwert-Summe der CO2APP (11t CO2).
+                Addiert man hier den Grundwert (3,5t) gemäß unserer Vereinfachung des UBA-Modells, 
+                dann erhält man 11,3t CO2. Dies entspricht ungefähr der Grundwert-Summe der CO2APP (11t CO2).
+                
                 </p>
                 <p>
                 Diese Grundwert-Summe bildet sich aus 4 "Sektoren", die wir durch unseren Lebensstil 
@@ -81,7 +82,9 @@
                 <p>
                 Die verwendeten Daten und Berechnungsmodelle sind an den CO2-Rechner des Umweltbundesamts angeleht und
                 wollen die Effekte zeigen, die wir durch sparsamen oder weniger sparsamen Lebensstil erreichen können. 
-                Eine exakte Berechnung ist ohne weitere Informationen über die persönliche SItuation im Einzelfall nicht möglich.
+                Eine exaktere Berechnung ist ohne weitere Informationen über die persönliche Situation im Einzelfall nicht möglich.
+                Weitere Informationen zum UBA-Modell und den Einsparpotentialen finden sich 
+                <a href="https://www.umweltbundesamt.de/publikationen/klimaneutral-leben" target=_blank>hier.</a>                
                 </p>
               </div>
             </ion-accordion>
