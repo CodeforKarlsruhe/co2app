@@ -90,10 +90,12 @@
           <p>
           Persönliche Maßnahmen für den Klimaschutz werden umso erfolgreicher, wenn wir auch andere Menschen davon überzeugen.
           Geben Sie Ihren Stadtteil an und die Anzahl der Personen, die sie dort als Mitstreiter:Innen gewinnen können 
-          und nehmen Sie so an der Klima-Challenge teil. Die aktuellen Ergebnisse sind auf unserem CO2-Dashboard sichtbar.
+          und nehmen Sie so an der Klima-Challenge teil. Die aktuellen Ergebnisse sind auf unserem 
+          <a href="https://co2dash.karlsruhe.de" target=_blank>CO2-Dashboard</a> sichtbar.
           </p>
           <p>
-            Im Kanal "Grüne Stadt" der Karlsruhe-App wird das Umweltamt das Projekt weiter verfolgen.
+            Im Kanal "Grüne Stadt" der <a href="https://www.karlsruhe.de/b4/stadtverwaltung/karlsruhe-app.de" target=_blank>
+            Karlsruhe-App</a> wird das Umweltamt das Projekt weiter verfolgen.
           </p>
 
           <ion-text color="primary">Ganz unten sehen Sie immer die aktuelle Berechnung</ion-text>          
@@ -233,7 +235,8 @@
         <ion-text>
           <p>Unsere Konsumausgaben sorgen ebenfalls für CO2 Emissionen.
             Geringere Ausgaben (z.B. 1000€ mtl.) oder hohe Ausgaben (z.B. 4500€ mtl.) haben einen
-            deutlichen Effekt.
+            deutlichen Effekt. Geldanlagen in klimaschonende anstelle von konverntionellen Produkten ("grünes Konto") 
+            tragen ebenfalls zur CO2 Einsparung bei. 
             </p>
         </ion-text>
         <ion-segment @ionChange='segmentChanged($event,"s4")'  value="normal">
