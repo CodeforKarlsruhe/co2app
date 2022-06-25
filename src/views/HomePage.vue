@@ -46,36 +46,47 @@
           des Bundesumweltamtes basiert und für diese Aktion vereinfacht wurde.
           </p>
 
-          <p>
-          Laut Energiebilanz Karlsruhe 2019 liegt der pro Kopf CO2 Ausstoß bei 7,8t jährlich. 
-          Diese Zahl enthält nicht den CO2 Ausstoß durch privaten Konsum. Addiert man hier den Grundwert (3,5t) gemäß 
-          vereinfachtem UBA-Modell, dann erhält man 11,3t CO2. Dies entspricht ungefähr der Grundwert-Summe der CO2APP (11t CO2).
-          </p>
-          <p>
-          Diese Grundwert-Summe bildet sich aus 4 "Sektoren", die wir durch unseren Lebensstil 
-          beinflussen können (plus einer Zugabe für "Sonstiges").
-          </p>
-          <p>
-            <ul>
-              <li>
-                Heizen und Strom
-              </li>
-              <li>
-                Mobilität
-              </li>
-              <li>
-                Ernährung
-              </li>
-              <li>
-              Allgemeiner Konsum
-              </li>
-            </ul>
-          </p>
-          <p>
-          Die verwendeten Daten und Berechnungsmodelle sind an den CO2-Rechner des Umweltbundesamts angeleht und
-           wollen die qualitativen Effekte zeigen, die wir durch sparsamen oder weniger sparsamen Lebensstil erreichen können. 
-           Eine exakte Berechnung ist ohne weitere Informationen über die persönliche SItuation im Einzelfall nicht möglich.
-          </p>
+          <ion-accordion-group>
+            <ion-accordion value="first">
+              <ion-item slot="header" color="light">
+                <ion-label>Details</ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <p>
+                Laut Energiebilanz Karlsruhe 2019 liegt der CO2 Ausstoß bei 7,8t jährlich pro Kopf. 
+                Die Effekte durch privaten Konsum sind dabei nicht enthalten.
+                Addiert man hier den Grundwert (3,5t) gemäß 
+                vereinfachtem UBA-Modell, dann erhält man 11,3t CO2. Dies entspricht ungefähr der Grundwert-Summe der CO2APP (11t CO2).
+                </p>
+                <p>
+                Diese Grundwert-Summe bildet sich aus 4 "Sektoren", die wir durch unseren Lebensstil 
+                beinflussen können (plus einer Zugabe für "Sonstiges").
+                </p>
+                <p>
+                  <ul>
+                    <li>
+                      Heizen und Strom
+                    </li>
+                    <li>
+                      Mobilität
+                    </li>
+                    <li>
+                      Ernährung
+                    </li>
+                    <li>
+                    Allgemeiner Konsum
+                    </li>
+                  </ul>
+                </p>
+                <p>
+                Die verwendeten Daten und Berechnungsmodelle sind an den CO2-Rechner des Umweltbundesamts angeleht und
+                wollen die Effekte zeigen, die wir durch sparsamen oder weniger sparsamen Lebensstil erreichen können. 
+                Eine exakte Berechnung ist ohne weitere Informationen über die persönliche SItuation im Einzelfall nicht möglich.
+                </p>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+
           <p>
           Persönliche Maßnahmen für den Klimaschutz werden umso erfolgreicher, wenn wir auch andere Menschen davon überzeugen.
           Geben Sie Ihren Stadtteil an und die Anzahl der Personen, die sie dort als Mitstreiter:Innen gewinnen können 
@@ -92,7 +103,6 @@
 
     <ion-card class="card-md">
       <ion-card-header>
-        <ion-card-title>Ihr CO2 Fussabdruck: {{ co2total }}t CO2</ion-card-title>
         <ion-card-subtitle>Wohnen
             <ion-icon src="/img/emoji/tent_emoji_u1f3d5.svg" size="large"></ion-icon>
         </ion-card-subtitle>
@@ -405,6 +415,7 @@ import { IonContent, IonHeader, IonFooter, IonPage, IonTitle,
   IonRange,
   IonGrid, IonRow, IonCol,
   IonButton,
+  IonAccordion,IonAccordionGroup,
   IonSegment, IonSegmentButton,
   IonIcon,
   IonSelect,IonSelectOption,
@@ -457,6 +468,7 @@ export default defineComponent({
     IonLabel,
     IonGrid, IonRow, IonCol,
     IonButton,
+    IonAccordion,IonAccordionGroup,
     IonSegment, IonSegmentButton,
     IonIcon,
     IonSelect,IonSelectOption,
