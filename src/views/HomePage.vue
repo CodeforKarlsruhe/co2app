@@ -61,12 +61,12 @@
                 </p>
                 <p>
                 Diese Grundwert-Summe bildet sich aus 4 "Sektoren", die wir durch unseren Lebensstil 
-                beinflussen können (plus einer Zugabe für "Sonstiges").
+                beinflussen können plus einer festen Zugabe für öffentliche Infrastruktur.
                 </p>
                 <p>
                   <ul>
                     <li>
-                      Heizen und Strom
+                      Wohnen (Heizung und Strom)
                     </li>
                     <li>
                       Mobilität
@@ -298,13 +298,13 @@
               @ionChange='districtChanged($event)'
             >
               <ion-select-option value="0">Bitte wählen</ion-select-option>
-              <ion-select-option v-for="(item,index) in districts" 
-                :key="item" 
-                :value="index + 1"
+              <ion-select-option v-for="item in districts" 
+                :key="item.idx" 
+                :value="item.idx"
                 :modelValue="district"
-                :text="item"
+                :text="item.name"
                 >
-                {{item}}
+                {{item.name}}
                 </ion-select-option>
             </ion-select>
           </ion-item>
@@ -497,12 +497,12 @@ export default defineComponent({
     }
   },
    methods: {
-    async presentAlert(e: any,msg = 'This is an alert message.') {
+    async presentAlert(e: any, hdr = "Warning", title = "", msg = "") {
       const alert = await alertController
         .create({
           cssClass: 'my-custom-class',
-          header: 'Info',
-          subHeader: 'Subtitle',
+          header: hdr,
+          subHeader: title,
           message: msg,
           buttons: ['OK'],
         });
@@ -594,39 +594,48 @@ export default defineComponent({
     },
     async submit() {
       var msg = ""
-      if (!this.district) {
+      var district = {name:"", idx: "0"}
+      if (!this.district || (this.district == "0")) {
         msg += "Kein Stadtteil"
+        await this.presentAlert(null,"Achtung!", "Bitte den Stadtteil auswählen")
+        return
       } else {
-        msg += "Stadtteil: " + this.districts[this.district-1]
+        const d = this.districts.find((x:any) => {return x.idx == this.district})
+        if (d) {
+          district = d
+        }
+        msg += "Stadtteil: " + district.name
       }
       // check store. we will supply this at the end
       var store
       var code = null
+      var id = null
       try {
         store = new Storage();
         await store.create();
         code = await store.get('code') || "";
-        console.log("Read code:",code)
+        id = await store.get('id') || "";
+        console.log("Read code:",code,", id:",id)
         msg += " Code: " + code
       } catch (e: any) {
           console.log("Reading store failed:",e.message)
       }
-      // test upload
+      // upload. Urls are default and localhost
       const urls = ["/rest.php","http://localhost:9000/rest.php"]
       var submitted = false
-      var netMsg = ""
+      var netMsg
       for (let url in urls) {
         console.log(urls[url])
+        netMsg = ""
         try {
             const data:any = {}
             data.msg = "CO2App"
             if (code) data.code = code
-            // dummy id
-            const id = "dummy"
+            // id, can be blank
             if (id) data.id = id
             data.co2total = this.co2total
             data.co2parms = this.co2parms
-            data.location = {district:this.district,mult:this.mult}
+            data.location = {district:district.name,mult:this.mult}
             const r = await axios.request({"method":"post","url":urls[url],
               "headers":postConfig.headers,
               "data":JSON.stringify(data)
@@ -636,14 +645,14 @@ export default defineComponent({
             if (r.status == 200) {
               const result = await r.data
               console.log("Axios result",result)
-              const id = result.id || ""
+              const xid = result.id || ""
               if (store) {
-                if (id > "")
-                  await store.set('id',id)
+                if (xid > "")
+                  await store.set('id',xid)
                 else 
                   await store.remove('id')
               }
-              netMsg += ", Axios OK, id: " + id
+              netMsg += ", Axios OK, new id: " + xid
           } else {
               console.log("Axios failed")
               netMsg += ", Axios failed"
@@ -658,8 +667,13 @@ export default defineComponent({
             netMsg += ", Network Error"
           }
         }
-        await this.presentAlert(null,"Test submit: "+msg + netMsg)
-        if (submitted) break
+        if (submitted) {
+          await this.presentAlert(null,"Abgeschickt!", "Danke fürs Mitmachen")
+          console.log(msg)
+          break
+        } else {
+          await this.presentAlert(null, "Problem", "Test submit: ", msg + netMsg)
+        }
       }
 
     },
@@ -766,7 +780,14 @@ export default defineComponent({
         if (r.status == 200) {
           const data = await r.data
           console.log("Data loaded",data)
-          this.districts = data
+          const d: any = []
+          data.forEach((x:string,i:number) => {
+            d.push({name:x,idx:(i+1).toString()})
+          })
+          this.districts = d.sort((a:any,b:any)=>{return a.name > b.name})
+          //this.districts = data
+          console.log(this.districts)
+
           this.districtsLoaded = true
       } else {
           console.log("failed")
@@ -801,11 +822,11 @@ export default defineComponent({
           this.axImg = dataUri
       } else {
           console.log("failed")
-          this.presentAlert(null,"Loading image failed")
+          this.presentAlert(null,"","Loading image failed")
       }
      } catch (e: any) {
        console.log("Error:",e.message)
-       this.presentAlert(null,e.message)
+       this.presentAlert(null,"",e.message)
      }
      // update footprint
      this.computeCo2()
@@ -817,7 +838,7 @@ export default defineComponent({
     const sect3 = ref({nomeat:false, muchmeat:false})
     const sect4 = ref({nomoney:false,muchmoney:false,stock:false})
     const axImg = ref("")
-    const district = ref(0)
+    const district = ref("0")
     const districts = ref([])
     const districtsLoaded = ref(false)
     const districtOptions = ref()
