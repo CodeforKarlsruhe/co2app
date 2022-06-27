@@ -12,8 +12,25 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+-- Exportiere Struktur von Tabelle okl.defaults
+CREATE TABLE IF NOT EXISTS `defaults` (
+  `size` int(11) NOT NULL,
+  `co2total` decimal(20,6) NOT NULL DEFAULT 0.000000,
+  `sector1` decimal(20,6) NOT NULL DEFAULT 0.000000,
+  `sector2` decimal(20,6) NOT NULL DEFAULT 0.000000,
+  `sector3` decimal(20,6) NOT NULL DEFAULT 0.000000,
+  `sector4` decimal(20,6) NOT NULL DEFAULT 0.000000,
+  `sector5` decimal(20,6) NOT NULL DEFAULT 0.000000
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Exportiere Daten aus Tabelle okl.defaults: ~0 rows (ungefähr)
+DELETE FROM `defaults`;
+/*!40000 ALTER TABLE `defaults` DISABLE KEYS */;
+INSERT INTO `defaults` (`size`, `co2total`, `sector1`, `sector2`, `sector3`, `sector4`, `sector5`) VALUES
+	(301749, 11.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000);
+/*!40000 ALTER TABLE `defaults` ENABLE KEYS */;
+
 -- Exportiere Struktur von Tabelle okl.districts
-DROP TABLE IF EXISTS `districts`;
 CREATE TABLE IF NOT EXISTS `districts` (
   `name` tinytext NOT NULL,
   `size` int(11) NOT NULL DEFAULT 0,
@@ -57,11 +74,11 @@ INSERT INTO `districts` (`name`, `size`, `users`, `mults`, `co2total`, `savingTo
 /*!40000 ALTER TABLE `districts` ENABLE KEYS */;
 
 -- Exportiere Struktur von Tabelle okl.submissions
-DROP TABLE IF EXISTS `submissions`;
 CREATE TABLE IF NOT EXISTS `submissions` (
   `user` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `co2total` decimal(20,6) NOT NULL DEFAULT 0.000000,
+  `savingsTotal` decimal(20,6) NOT NULL DEFAULT 0.000000,
   `sector1` decimal(20,6) NOT NULL,
   `sector2` decimal(20,6) NOT NULL,
   `sector3` decimal(20,6) NOT NULL,
@@ -78,12 +95,11 @@ CREATE TABLE IF NOT EXISTS `submissions` (
 -- Exportiere Daten aus Tabelle okl.submissions: ~1 rows (ungefähr)
 DELETE FROM `submissions`;
 /*!40000 ALTER TABLE `submissions` DISABLE KEYS */;
-INSERT INTO `submissions` (`user`, `timestamp`, `co2total`, `sector1`, `sector2`, `sector3`, `sector4`, `sector5`, `location`, `mult`, `json`, `code`) VALUES
-	(1, '2022-06-27 15:51:36', 0.000000, 1.000000, 2.000000, 3.000000, 4.000000, 5.000000, 'a', 0, NULL, NULL);
+INSERT INTO `submissions` (`user`, `timestamp`, `co2total`, `savingsTotal`, `sector1`, `sector2`, `sector3`, `sector4`, `sector5`, `location`, `mult`, `json`, `code`) VALUES
+	(1, '2022-06-27 15:51:36', 0.000000, 0.000000, 1.000000, 2.000000, 3.000000, 4.000000, 5.000000, 'a', 0, NULL, NULL);
 /*!40000 ALTER TABLE `submissions` ENABLE KEYS */;
 
 -- Exportiere Struktur von Tabelle okl.users
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` timestamp NOT NULL DEFAULT current_timestamp(),
