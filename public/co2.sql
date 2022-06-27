@@ -16,9 +16,11 @@
 DROP TABLE IF EXISTS `districts`;
 CREATE TABLE IF NOT EXISTS `districts` (
   `name` tinytext NOT NULL,
+  `size` int(11) NOT NULL DEFAULT 0,
   `users` int(11) NOT NULL DEFAULT 0,
   `mults` int(11) NOT NULL DEFAULT 0,
-  `co2total` decimal(20,6) NOT NULL DEFAULT 11.000000
+  `co2total` decimal(20,6) NOT NULL DEFAULT 11.000000,
+  `savingTotal` decimal(20,6) NOT NULL DEFAULT 0.000000
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Daten Export vom Benutzer nicht ausgewählt
