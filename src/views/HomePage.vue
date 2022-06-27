@@ -739,7 +739,7 @@ export default defineComponent({
    data() {
       return {
         co2total: 0,
-        co2parms: {sector1:{},sector2:{},sector3:{},sector4:{},sector5:{},sector6:{}},
+        co2parms: {sector1:{},sector2:{},sector3:{},sector4:{},sector5:{}},
         /*
         chk: {val: "Chk", isChecked: true },
         form: [
