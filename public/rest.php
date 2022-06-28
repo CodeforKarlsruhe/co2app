@@ -108,11 +108,75 @@ function openConnection() {
   // savings = (defaultCo2 - total)*num => by districts
   // sec1..5 = (defaultSec - val)*num => balance
   // --------------------------------------------------
-function insertSubmission($pdo,$location,$sectors) {
+function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$requestCode,$remote){
 	mlog("instertSub");
-	// create new hash
 
-	$hash = "123";
+	// get globals
+	foreach ($pdo->query("select * from defaults") as $glob) {
+		break;
+	}
+	mlog(json_encode($glob));
+
+	// total persons
+	$num = 1 + $location["mult"];
+
+	// create new hash
+	$hash = uniqid($cfg["uprefix"]);
+	try {
+		$newUser = $pdo->prepare("insert into users set hash = ?");
+		$sql = "insert into submissions set ";
+		$sql .= "user = ?, ";
+		$sql .= "co2total = ?, ";
+		$sql .= "savingsTotal = ?, ";
+		$sql .= "sector1 = ?, ";
+		$sql .= "sector2 = ?, ";
+		$sql .= "sector3 = ?, ";
+		$sql .= "sector4 = ?, ";
+		$sql .= "sector5 = ?, ";
+		$sql .= "location = ?, ";
+		$sql .= "mult = ?, ";
+		$sql .= "json = ?, ";
+		$sql .= "code = ?, ";
+		$sql .= "remote = ? ";
+		$newData = $pdo->prepare($sql);
+	} catch (Exception $e) {
+		mlog("Error: " . print_r($pdo->errorInfo(), true));
+		die();
+	}
+
+	try {
+		$pdo->beginTransaction();
+		$newUser->execute([$hash]);
+		$id = $pdo->lastInsertId();
+		mlog("New user " . $id . " - " . $hash);
+
+		$newData->execute([
+			$id,
+			$num * $co2total,
+			$num * ($glob["co2total"] - $co2total),
+			$num * ($glob["sector1"] - $sectors["sector1"]),
+			$num * ($glob["sector2"] - $sectors["sector2"]),
+			$num * ($glob["sector3"] - $sectors["sector3"]),
+			$num * ($glob["sector4"] - $sectors["sector4"]),
+			$num * ($glob["sector5"] - $sectors["sector5"]),
+			$location["district"],
+			$location["mult"],
+			$parmsString,
+			$requestCode,
+			$remote
+		]);
+
+		//$newData->execute([$id,$co2total,]);
+
+
+		$pdo->commit();
+	} catch (Exception $e) {
+		$pdo->rollBack();
+		mlog("New user failed: " . $e->getMessage());
+		$hash = "";
+		die();
+	}
+	
 	return $hash;
 }
 
@@ -262,8 +326,10 @@ switch ($meth) {
 			}
 		}		
 
+		$remote = $_SERVER['REMOTE_ADDR']?:($_SERVER['HTTP_X_FORWARDED_FOR']?:$_SERVER['HTTP_CLIENT_IP']);
+
 		// insert submission()
-		$hash = insertSubmission($pdo,$location,$sectors);
+		$hash = insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$requestCode,$remote);
 		if ($hash == "") {
 			mlog("Insert failed ");
 			header('HTTP/1.0 501 Server Error');
