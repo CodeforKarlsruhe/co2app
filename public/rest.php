@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Methods: GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH");
+header("Access-Control-Allow-Methods: GET, HEAD, POST, CONNECT, OPTIONS");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access-control-allow-origin, headers, origin, callback, content-type");
 header("Access-Control-Allow-Credentials: true");
@@ -7,43 +7,6 @@ header("Content-Type: application/json; charset=UTF-8");
 //header("Content-Type: */*;encoding=gzip, deflate, br");
 //https://ionicframework.com/docs/troubleshooting/cors
 
-
-/*
-old
-try {
-    $input = json_decode(file_get_contents('php://input'), true);
-    // Wir wählen die Operation anhand der Request Methode
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	    $result = array();
-		// accept id=123 or no id field
-		if (!array_key_exists("code",$input) || ($input["code"] == 123)) {
-			// assume no errors: return 200
-			header('HTTP/1.0 200 OK');
-			$result = array("status" => 1, "id" => "abc", "message" => "Good Code");
-		} else {
-			// not authorized
-			header('HTTP/1.0 403 Invalid ID');
-			die();
-			//$result["data"] = array("status" => 0, "message" => "Bad Code");
-		}
-    } else {
-		throw new Exception('Invalid.');
-	}
-
-} catch (Exception $e) {
-		//if ($e->getCode() == ApiException::MALFORMED_INPUT) {
-		header('HTTP/1.0 409 Bad Request');
-		die();
-		//$result["data"] = $e->getMessage();
-		//die($result);
-}
- 
-header('Content-Type: application/json');
-
-print(json_encode($result));
-
-
-*/
 
 /*
 test with httpie
@@ -68,6 +31,20 @@ define("REASON", [
 define("DRYRUN",false); // default: false
 
 // --------------------------------------------------
+  // pdo statements
+  // --------------------------------------------------
+
+// PDO statements
+define ("DBCALL", array(
+    "GET_USER_BY_HASH" => "SELECT * from users where hash = ?;",
+    "ADD_USER" => "insert into users set name = ?, hash = ?;",
+    "GET_SUBMISSION" => "SELECT * from submissions where user = ?;",
+    "SELECT_SUBMISSION" => "SELECT * from submissions where id = ? for update;",
+    "UPDATE_SUBMISSION" => "update submissions set location = ? where id = ?;"
+	)
+);
+
+// --------------------------------------------------
   // log function
   // --------------------------------------------------
 
@@ -84,19 +61,8 @@ define("DRYRUN",false); // default: false
 
 
 // --------------------------------------------------
-  // pdo statements
+  // function
   // --------------------------------------------------
-
-// PDO statements
-define ("DBCALL", array(
-    "GET_USER_BY_HASH" => "SELECT * from users where hash = ?;",
-    "ADD_USER" => "insert into users set name = ?, hash = ?;",
-    "GET_SUBMISSION" => "SELECT * from submissions where user = ?;",
-    "SELECT_SUBMISSION" => "SELECT * from submissions where id = ? for update;",
-    "UPDATE_SUBMISSION" => "update submissions set location = ? where id = ?;"
-	)
-);
-
 
 function openConnection() {
 	// ini file on server is elsewhere
@@ -136,23 +102,41 @@ function openConnection() {
 	return $pdo;
 }
 
+// --------------------------------------------------
+  // insert function
+  // num = 1 + mult
+  // savings = (defaultCo2 - total)*num => by districts
+  // sec1..5 = (defaultSec - val)*num => balance
+  // --------------------------------------------------
+function insertSubmission($pdo,$location,$sectors) {
+	mlog("instertSub");
+	// create new hash
 
+	$hash = "123";
+	return $hash;
+}
+
+// --------------------------------------------------
+  // remove function
+  // --------------------------------------------------
 function removeSubmission($pdo,$location,$sectors,$id) {
 	mlog("RemoveSub");
 	return true;
 }
 
-function insertSubmission($pdo,$location,$sectors) {
-	mlog("insterSub");
-	$hash = "";
-	return $hash;
-}
 
-function updateDash() {
+// --------------------------------------------------
+  // update function
+  // --------------------------------------------------
+  function updateDash() {
 	mlog("updateDash");
 
 }
 
+
+// --------------------------------------------------
+  // start ...
+  // --------------------------------------------------
 
 
 $meth = $_SERVER["REQUEST_METHOD"];
@@ -221,6 +205,7 @@ switch ($meth) {
 				$queryCodes = $pdo->prepare('SELECT code1,code2 FROM defaults');
 			} catch (PDOException $e) {
 				mlog("PDO error " . $e->getMessage());
+				header('HTTP/1.0 501 Server Error');
 				die();
 			}
 
@@ -229,6 +214,7 @@ switch ($meth) {
 				$codes = $queryCodes->fetchAll();
 				if (count($codes) < 1) {
 					mlog("Missing codes in DB");
+					header('HTTP/1.0 501 Server Error');
 					die();
 				}
 				if (($requestCode != $codes[0]["code1"]) && ($requestCode != $codes[0]["code2"])) {
@@ -238,6 +224,7 @@ switch ($meth) {
 					break;
 				}
 			} catch (Exception $e) {
+				header('HTTP/1.0 501 Server Error');
 				die("Error: " . print_r($queryCodes->errorInfo(), true));
 			}
 
@@ -249,6 +236,7 @@ switch ($meth) {
 				$queryId = $pdo->prepare('SELECT id FROM users where hash = ?');
 			} catch (PDOException $e) {
 				mlog("PDO error " . $e->getMessage());
+				header('HTTP/1.0 501 Server Error');
 				die();
 			}
 
@@ -264,18 +252,21 @@ switch ($meth) {
 				// remove submission for this user
 				if (!removeSubmission($pdo,$location,$sectors,$ids[0]["id"])){
 					mlog("Removal failed");
+					header('HTTP/1.0 501 Server Error');
 					die();
 				}
 
 			} catch (Exception $e) {
+				header('HTTP/1.0 501 Server Error');
 				die("Error: " . print_r($queryCodes->errorInfo(), true));
 			}
 		}		
 
 		// insert submission()
 		$hash = insertSubmission($pdo,$location,$sectors);
-		if (hash == "") {
+		if ($hash == "") {
 			mlog("Insert failed ");
+			header('HTTP/1.0 501 Server Error');
 			die();
 		}
 		// update dashboard tables
@@ -288,12 +279,22 @@ switch ($meth) {
 
     default:
         mlog("Other");
-		die(501);
+		header('HTTP/1.0 409 Bad Request');
+		die();
         break;
 }
 
+header('HTTP/1.0 200 OK');
 echo json_encode($result);
 ob_end_flush();
 
+
+/*
+
+header('HTTP/1.0 200 OK');
+header('HTTP/1.0 403 Invalid ID');
+header('HTTP/1.0 409 Bad Request');
+
+*/
 
 ?>
