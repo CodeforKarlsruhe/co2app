@@ -633,7 +633,7 @@ export default defineComponent({
             if (code) data.code = code
             // id, can be blank
             if (id) data.id = id
-            data.co2total = this.co2total
+            //data.co2total = this.co2total
             data.co2parms = this.co2parms
             data.location = {district:district.name,mult:this.mult}
             const r = await axios.request({"method":"post","url":urls[url],
@@ -647,10 +647,13 @@ export default defineComponent({
               console.log("Axios result",result)
               const xid = result.id || ""
               if (store) {
-                if (xid > "")
+                if ((xid > "") && (result.status == 1)) {
+                  console.log("Set id")
                   await store.set('id',xid)
-                else 
+                } else {
+                  console.log("Clr id")
                   await store.remove('id')
+                } 
               }
               netMsg += ", Axios OK, new id: " + xid
           } else {
@@ -672,7 +675,7 @@ export default defineComponent({
           console.log(msg)
           break
         } else {
-          await this.presentAlert(null, "Problem", "Test submit: ", msg + netMsg)
+          await this.presentAlert(null, "Problem", "Kein Erfolg weil: ", msg + netMsg)
         }
       }
 
