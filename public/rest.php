@@ -31,18 +31,9 @@ define("REASON", [
 define("DRYRUN",false); // default: false
 
 // --------------------------------------------------
-  // pdo statements
+  //global config
   // --------------------------------------------------
-
-// PDO statements
-define ("DBCALL", array(
-    "GET_USER_BY_HASH" => "SELECT * from users where hash = ?;",
-    "ADD_USER" => "insert into users set name = ?, hash = ?;",
-    "GET_SUBMISSION" => "SELECT * from submissions where user = ?;",
-    "SELECT_SUBMISSION" => "SELECT * from submissions where id = ? for update;",
-    "UPDATE_SUBMISSION" => "update submissions set location = ? where id = ?;"
-	)
-);
+$cfg = array();
 
 // --------------------------------------------------
   // log function
@@ -66,6 +57,7 @@ define ("DBCALL", array(
 
 function openConnection() {
 	// ini file on server is elsewhere
+	global $cfg;
 	$cfg = array();
 	try {
 		if (!isset($_SERVER['HTTP_HOST']) or !isset($_SERVER['HTTPS'])) {
@@ -108,22 +100,45 @@ function openConnection() {
   // savings = (defaultCo2 - total)*num => by districts
   // sec1..5 = (defaultSec - val)*num => balance
   // --------------------------------------------------
-function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$requestCode,$remote){
+function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$requestCode,$remote,$id){
+	global $cfg;
 	mlog("instertSub");
 
 	// get globals
-	foreach ($pdo->query("select * from defaults") as $glob) {
-		break;
+	try {
+		foreach ($pdo->query("select * from defaults") as $glob) {
+			break;
+		}
+	} catch (PDOException $e) {
+		mlog("PDO error" . $e->getMessage());
+		die();
 	}
 	mlog(json_encode($glob));
 
 	// total persons
 	$num = 1 + $location["mult"];
 
-	// create new hash
-	$hash = uniqid($cfg["uprefix"]);
+	// create new user if required
+	if ($id < 1) {
+		$hash = uniqid($cfg["uprefix"]);
+		try {
+			$query = $pdo->prepare("insert into users set hash = ?");
+			$pdo->beginTransaction();
+			$query->execute([$hash]);
+			$id = $pdo->lastInsertId();
+			mlog("New user " . $id . " - " . $hash);
+			$pdo->commit();
+		} catch (PDOException $e) {
+			mlog("PDO error" . $e->getMessage());
+			$pdo->rollBack();
+			mlog("New user failed: " . $e->getMessage());
+			die();
+		}
+	} else {
+		$hash = "";
+	}
+	// insert. scale co2 values by participants
 	try {
-		$newUser = $pdo->prepare("insert into users set hash = ?");
 		$sql = "insert into submissions set ";
 		$sql .= "user = ?, ";
 		$sql .= "co2total = ?, ";
@@ -138,23 +153,13 @@ function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$reques
 		$sql .= "json = ?, ";
 		$sql .= "code = ?, ";
 		$sql .= "remote = ? ";
-		$newData = $pdo->prepare($sql);
-	} catch (Exception $e) {
-		mlog("Error: " . print_r($pdo->errorInfo(), true));
-		die();
-	}
-
-	try {
+		$query = $pdo->prepare($sql);
 		$pdo->beginTransaction();
-		$newUser->execute([$hash]);
-		$id = $pdo->lastInsertId();
-		mlog("New user " . $id . " - " . $hash);
-
-		$newData->execute([
+		$query->execute([
 			$id,
-			$num * $co2total,
-			$num * ($glob["co2total"] - $co2total),
-			$num * ($glob["sector1"] - $sectors["sector1"]),
+			$num * $co2total, // total consumption
+			$num * ($glob["co2total"] - $co2total), // total savings
+			$num * ($glob["sector1"] - $sectors["sector1"]), // sector savings!
 			$num * ($glob["sector2"] - $sectors["sector2"]),
 			$num * ($glob["sector3"] - $sectors["sector3"]),
 			$num * ($glob["sector4"] - $sectors["sector4"]),
@@ -165,15 +170,11 @@ function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$reques
 			$requestCode,
 			$remote
 		]);
-
-		//$newData->execute([$id,$co2total,]);
-
-
 		$pdo->commit();
-	} catch (Exception $e) {
+	} catch (PDOException $e) {
+		mlog("PDO error" . $e->getMessage());
 		$pdo->rollBack();
-		mlog("New user failed: " . $e->getMessage());
-		$hash = "";
+		mlog("New user failed");
 		die();
 	}
 	
@@ -183,8 +184,20 @@ function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$reques
 // --------------------------------------------------
   // remove function
   // --------------------------------------------------
-function removeSubmission($pdo,$location,$sectors,$id) {
+function removeSubmission($pdo,$id) {
+	global $cfg;
 	mlog("RemoveSub");
+	try {
+		$query = $pdo->prepare("delete from submissions where user = ?");
+		$pdo->beginTransaction();
+		$query->execute([$id]);
+		$pdo->commit();
+
+	} catch (PDOException $e) {
+		mlog("PDO error" . $e->getMessage());
+		die();
+	}
+
 	return true;
 }
 
@@ -193,6 +206,18 @@ function removeSubmission($pdo,$location,$sectors,$id) {
   // update function
   // --------------------------------------------------
   function updateDash() {
+	mlog("update dash");
+	/*
+		1) sector savings for balance chart
+			sector default - sectorSavings/size
+			sum(sector1), sum(sector2),... 
+		2) district savings for map
+			savingsByDist/distSize  
+			sum(savings) group by district
+		3) partizipants + mults
+			count(=) + sum(mult) group by district
+
+	*/
 	/*
 	query options with aggregation
 		$query = $pdo->prepare('SELECT count(*) as cnt, sum(mult) as mult FROM submissions where location = ?');
@@ -369,24 +394,18 @@ switch ($meth) {
 		// if id present, must match existing id. if exist, update, else insert
 		if ($requestId > "") {
 			try {
-				$query = $pdo->prepare('SELECT id FROM users where hash = ?');
-			} catch (PDOException $e) {
-				mlog("PDO error " . $e->getMessage());
-				header('HTTP/1.0 501 Server Error');
-				die();
-			}
-
-			try {
+				$query = $pdo->prepare('SELECT id, hash FROM users where hash = ?');
 				$query->execute([$requestId]);
 				$result = $query->fetchAll();
-				if (count($result) == 0) {
+				if (count($result) < 1) {
 					mlog("Invalid user " . $requestId);
 					$result = array("id" => "","msg" => REASON["USER"],"status" => 0);
 					break;
 				}
 				mlog("Users exists " . $result[0]["hash"]);
+				$user = $result[0]["id"];
 				// remove submission for this user
-				if (!removeSubmission($pdo,$location,$sectors,$result[0]["id"])){
+				if (!removeSubmission($pdo,$result[0]["id"])){
 					mlog("Removal failed");
 					header('HTTP/1.0 501 Server Error');
 					die();
@@ -397,17 +416,23 @@ switch ($meth) {
 				header('HTTP/1.0 501 Server Error');
 				die();
 			}
-		}		
+		} else {
+			$user = 0;
+		}
 
+		// get remote info
 		$remote = $_SERVER['REMOTE_ADDR']?:($_SERVER['HTTP_X_FORWARDED_FOR']?:$_SERVER['HTTP_CLIENT_IP']);
 
 		// insert submission()
-		$hash = insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$requestCode,$remote);
+		$hash = insertSubmission($pdo,$location,$sectors,
+			$co2total,$parmsString,$requestCode,$remote,$user);
+
 		if ($hash == "") {
-			mlog("Insert failed ");
-			header('HTTP/1.0 501 Server Error');
-			die();
+			// user re-used
+			$hash = $requestId;
+			mlog("Reusing user  " . $hash);
 		}
+
 		// update dashboard tables
 		updateDash();
 
