@@ -71,6 +71,7 @@ function openConnection() {
 
 	} catch (Exception $e) {
 		mlog("Invalid config");
+		header('HTTP/1.0 501 Server Error');
 		die("Config Error");
 	}
 
@@ -88,6 +89,7 @@ function openConnection() {
 		$pdo = new PDO($dsn, $cfg["dbuser"], $cfg["dbpass"],$attr);
 	} catch (PDOException $e) {
 		mlog("PDO error" . $e->getMessage());
+		header('HTTP/1.0 501 Server Error');
 		die();
 	}
 	mlog("DB open");
@@ -112,6 +114,7 @@ function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$reques
 		}
 	} catch (PDOException $e) {
 		mlog("PDO error" . $e->getMessage());
+		header('HTTP/1.0 501 Server Error');
 		die();
 	}
 	mlog(json_encode($glob));
@@ -133,6 +136,7 @@ function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$reques
 			mlog("PDO error" . $e->getMessage());
 			$pdo->rollBack();
 			mlog("New user failed: " . $e->getMessage());
+			header('HTTP/1.0 501 Server Error');
 			die();
 		}
 	} else {
@@ -175,7 +179,8 @@ function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$reques
 	} catch (PDOException $e) {
 		mlog("PDO error" . $e->getMessage());
 		$pdo->rollBack();
-		mlog("New user failed");
+		mlog("New submission failed");
+		header('HTTP/1.0 501 Server Error');
 		die();
 	}
 
@@ -197,6 +202,7 @@ function removeSubmission($pdo,$id) {
 		$pdo->commit();
 	} catch (PDOException $e) {
 		mlog("PDO error" . $e->getMessage());
+		header('HTTP/1.0 501 Server Error');
 		die();
 	}
 	return true;
@@ -247,6 +253,7 @@ function removeSubmission($pdo,$id) {
 
 	} catch (PDOException $e) {
 		mlog("PDO error" . $e->getMessage());
+		header('HTTP/1.0 501 Server Error');
 		die();
 	}
 
@@ -290,6 +297,7 @@ function removeSubmission($pdo,$id) {
 
 	} catch (PDOException $e) {
 		mlog("PDO error" . $e->getMessage());
+		header('HTTP/1.0 501 Server Error');
 		die();
 	}
 
@@ -405,7 +413,7 @@ switch ($meth) {
 				if (($requestCode != $result[0]["code1"]) && ($requestCode != $result[0]["code2"])) {
 					mlog("Invalid code: " . $requestCode);
 					mlog($result[0]["code1"]);
-					$result = array("id" => "","msg" => REASON["KEY"],"status" => 0);
+					$result = array("id" => "","msg" => REASON["CODE"],"status" => 0);
 					break;
 				}
 			} catch (PDOException $e) {
