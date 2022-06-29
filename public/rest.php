@@ -91,6 +91,7 @@ function openConnection() {
 		die();
 	}
 	mlog("DB open");
+
 	return $pdo;
 }
 
@@ -177,7 +178,9 @@ function insertSubmission($pdo,$location,$sectors,$co2total,$parmsString,$reques
 		mlog("New user failed");
 		die();
 	}
-	
+
+	updateDash($pdo,$glob);
+
 	return $hash;
 }
 
@@ -192,12 +195,10 @@ function removeSubmission($pdo,$id) {
 		$pdo->beginTransaction();
 		$query->execute([$id]);
 		$pdo->commit();
-
 	} catch (PDOException $e) {
 		mlog("PDO error" . $e->getMessage());
 		die();
 	}
-
 	return true;
 }
 
@@ -205,8 +206,44 @@ function removeSubmission($pdo,$id) {
 // --------------------------------------------------
   // update function
   // --------------------------------------------------
-  function updateDash() {
-	mlog("update dash");
+  function updateDash($pdo,$glob) {
+	mlog("updateDash");
+	try {
+		$sql  = "SELECT sum(sector1) as save1, ";
+		$sql .= "sum(sector2) as save2, ";
+		$sql .= "sum(sector3) as save3, ";
+		$sql .= "sum(sector4) as save4, ";
+		$sql .= "sum(sector5) as save5 ";
+		$sql .= " from submissions";
+		$query = $pdo->prepare($sql);
+		$query->execute();
+		$result = $query->fetchAll();
+		if (count($result) < 1) {
+			mlog("No data on update");
+			return;
+		}
+		$savings = $result[0];
+		 print_r($savings);
+
+		$balance = [
+			$glob["sector1"] - $savings["save1"]/$glob["size"],
+			$glob["sector2"] - $savings["save2"]/$glob["size"],
+			$glob["sector3"] - $savings["save3"]/$glob["size"],
+			$glob["sector4"] - $savings["save4"]/$glob["size"],
+			$glob["sector5"] - $savings["save5"]/$glob["size"]
+		];
+		print_r($balance);
+		// update
+		$sql  = "update balance set sector1 = ?, sector2 = ?, sector3 = ?, sector4 = ?, sector5 = ?";
+		$query = $pdo->prepare($sql);
+		$pdo->beginTransaction();
+		$query->execute($balance);
+		$pdo->commit();
+
+	} catch (PDOException $e) {
+		mlog("PDO error" . $e->getMessage());
+		die();
+	}
 	/*
 		1) sector savings for balance chart
 			sector default - sectorSavings/size
@@ -266,7 +303,6 @@ function removeSubmission($pdo,$id) {
 			)
 
 */
-	mlog("updateDash");
 
 }
 
@@ -423,7 +459,7 @@ switch ($meth) {
 		// get remote info
 		$remote = $_SERVER['REMOTE_ADDR']?:($_SERVER['HTTP_X_FORWARDED_FOR']?:$_SERVER['HTTP_CLIENT_IP']);
 
-		// insert submission()
+		// insert submission(), insert with update!
 		$hash = insertSubmission($pdo,$location,$sectors,
 			$co2total,$parmsString,$requestCode,$remote,$user);
 
@@ -433,8 +469,6 @@ switch ($meth) {
 			mlog("Reusing user  " . $hash);
 		}
 
-		// update dashboard tables
-		updateDash();
 
 		$result = array("id" => $hash,"msg" => "OK","status" => 1);
 
