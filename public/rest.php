@@ -208,6 +208,11 @@ function removeSubmission($pdo,$id) {
   // --------------------------------------------------
   function updateDash($pdo,$glob) {
 	mlog("updateDash");
+	/*
+		1) sector savings for balance chart
+			sector default - sectorSavings/size
+			sum(sector1), sum(sector2),... 
+	*/
 	try {
 		$sql  = "SELECT sum(sector1) as save1, ";
 		$sql .= "sum(sector2) as save2, ";
@@ -219,11 +224,11 @@ function removeSubmission($pdo,$id) {
 		$query->execute();
 		$result = $query->fetchAll();
 		if (count($result) < 1) {
-			mlog("No data on update");
+			mlog("No sector data on update");
 			return;
 		}
 		$savings = $result[0];
-		 print_r($savings);
+	 	//print_r($savings);
 
 		$balance = [
 			$glob["sector1"] - $savings["save1"]/$glob["size"],
@@ -232,8 +237,8 @@ function removeSubmission($pdo,$id) {
 			$glob["sector4"] - $savings["save4"]/$glob["size"],
 			$glob["sector5"] - $savings["save5"]/$glob["size"]
 		];
-		print_r($balance);
-		// update
+		//print_r($balance);
+		// update balance
 		$sql  = "update balance set sector1 = ?, sector2 = ?, sector3 = ?, sector4 = ?, sector5 = ?";
 		$query = $pdo->prepare($sql);
 		$pdo->beginTransaction();
@@ -244,6 +249,51 @@ function removeSubmission($pdo,$id) {
 		mlog("PDO error" . $e->getMessage());
 		die();
 	}
+
+	/*
+		2) district savings for map
+			savingsByDist/distSize  
+			sum(savings) group by district
+	*/
+	try {
+		$query = $pdo->prepare('SELECT location, count(*) as users, sum(mult) as mults, sum(savingsTotal) as saving FROM submissions group by location');
+		$query->execute();
+		$result = $query->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+
+		if (count($result) < 1) {
+			mlog("No location data on update");
+			return;
+		}
+
+		//print_r($result);
+
+		foreach($result as $key => $val) {
+			echo $key . PHP_EOL;
+			echo $val[0]["users"] . " - " . $val[0]["mults"] . " - " . $val[0]["saving"] .PHP_EOL;
+			// get size of district
+			$query = $pdo->prepare("select size from districts where name = ?");
+			$query->execute([$key]);
+			$r = $query->fetchAll();
+			if (count($r) < 1) continue;
+			//print_r($r);
+			$size = $r[0]["size"];
+			echo " size: " . $size . PHP_EOL;
+			$saving = $val[0]["saving"] / $size;
+
+			$sql  = "update districts set savingTotal = ?, users = ?, mults = ? where name = ?";
+			$query = $pdo->prepare($sql);
+			$pdo->beginTransaction();
+			$query->execute([$saving,$val[0]["users"],$val[0]["mults"],$key]);
+			$pdo->commit();
+
+		}
+
+
+	} catch (PDOException $e) {
+		mlog("PDO error" . $e->getMessage());
+		die();
+	}
+
 	/*
 		1) sector savings for balance chart
 			sector default - sectorSavings/size
