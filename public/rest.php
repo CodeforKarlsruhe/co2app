@@ -254,6 +254,8 @@ function removeSubmission($pdo,$id) {
 		2) district savings for map
 			savingsByDist/distSize  
 			sum(savings) group by district
+		3) partizipants + mults
+			count(=) + sum(mult) group by district
 	*/
 	try {
 		$query = $pdo->prepare('SELECT location, count(*) as users, sum(mult) as mults, sum(savingsTotal) as saving FROM submissions group by location');
@@ -268,8 +270,7 @@ function removeSubmission($pdo,$id) {
 		//print_r($result);
 
 		foreach($result as $key => $val) {
-			echo $key . PHP_EOL;
-			echo $val[0]["users"] . " - " . $val[0]["mults"] . " - " . $val[0]["saving"] .PHP_EOL;
+			// echo $key . ":" . $val[0]["users"] . " - " . $val[0]["mults"] . " - " . $val[0]["saving"] .PHP_EOL;
 			// get size of district
 			$query = $pdo->prepare("select size from districts where name = ?");
 			$query->execute([$key]);
@@ -277,7 +278,6 @@ function removeSubmission($pdo,$id) {
 			if (count($r) < 1) continue;
 			//print_r($r);
 			$size = $r[0]["size"];
-			echo " size: " . $size . PHP_EOL;
 			$saving = $val[0]["saving"] / $size;
 
 			$sql  = "update districts set savingTotal = ?, users = ?, mults = ? where name = ?";
@@ -285,7 +285,6 @@ function removeSubmission($pdo,$id) {
 			$pdo->beginTransaction();
 			$query->execute([$saving,$val[0]["users"],$val[0]["mults"],$key]);
 			$pdo->commit();
-
 		}
 
 
@@ -293,66 +292,6 @@ function removeSubmission($pdo,$id) {
 		mlog("PDO error" . $e->getMessage());
 		die();
 	}
-
-	/*
-		1) sector savings for balance chart
-			sector default - sectorSavings/size
-			sum(sector1), sum(sector2),... 
-		2) district savings for map
-			savingsByDist/distSize  
-			sum(savings) group by district
-		3) partizipants + mults
-			count(=) + sum(mult) group by district
-
-	*/
-	/*
-	query options with aggregation
-		$query = $pdo->prepare('SELECT count(*) as cnt, sum(mult) as mult FROM submissions where location = ?');
-		$query->execute(["Innenstadt-Ost"]);
-		$result = $query->fetchAll();
-		print_r($result);
-		Array
-			(
-				[0] => Array
-					(
-						[cnt] => 1
-						[mult] => 7
-					)
-
-			)
-
-	with grouping. note the fetch_group | ...
-
-			$query = $pdo->prepare('SELECT location, count(*) as cnt, sum(mult) as mult FROM submissions group by location');
-			$query->execute();
-			$result = $query->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
-			print_r($result);
-				
-			Array
-			(
-				[Innenstadt-Ost] => Array
-					(
-						[0] => Array
-							(
-								[cnt] => 15
-								[mult] => 5
-							)
-
-					)
-
-				[Innenstadt-West] => Array
-					(
-						[0] => Array
-							(
-								[cnt] => 1
-								[mult] => 7
-							)
-
-					)
-
-			)
-
-*/
 
 }
 
