@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `defaults` (
   `code2` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Exportiere Daten aus Tabelle okl.defaults: ~1 rows (ungefähr)
+-- Exportiere Daten aus Tabelle okl.defaults: ~0 rows (ungefähr)
 DELETE FROM `defaults`;
 /*!40000 ALTER TABLE `defaults` DISABLE KEYS */;
 INSERT INTO `defaults` (`size`, `co2total`, `sector1`, `sector2`, `sector3`, `sector4`, `sector5`, `code1`, `code2`) VALUES
@@ -98,11 +98,27 @@ CREATE TABLE IF NOT EXISTS `submissions` (
   CONSTRAINT `FK__users` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='savings,sector1-5 : computed values for (1 + mult)';
 
--- Exportiere Daten aus Tabelle okl.submissions: ~1 rows (ungefähr)
+-- Exportiere Daten aus Tabelle okl.submissions: ~17 rows (ungefähr)
 DELETE FROM `submissions`;
 /*!40000 ALTER TABLE `submissions` DISABLE KEYS */;
 INSERT INTO `submissions` (`user`, `timestamp`, `co2total`, `savingsTotal`, `sector1`, `sector2`, `sector3`, `sector4`, `sector5`, `location`, `mult`, `json`, `code`, `remote`) VALUES
-	(1, '2022-06-27 15:51:36', 0.000000, 0.000000, 1.000000, 2.000000, 3.000000, 4.000000, 5.000000, 'a', 0, NULL, NULL, NULL);
+	(1, '2022-06-27 15:51:36', 0.000000, 0.000000, 1.000000, 2.000000, 3.000000, 4.000000, 5.000000, 'a', 0, NULL, NULL, NULL),
+	(14, '2022-06-29 00:16:41', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, 'parmsString', '', NULL),
+	(15, '2022-06-29 00:16:46', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, 'parmsString', '', NULL),
+	(16, '2022-06-29 00:17:04', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, 'parmsString', '', NULL),
+	(17, '2022-06-29 00:21:22', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, 'parmsString', '', NULL),
+	(18, '2022-06-29 00:21:26', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, 'parmsString', '', NULL),
+	(19, '2022-06-29 00:21:40', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, 'parmsString', '', NULL),
+	(20, '2022-06-29 00:21:45', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, 'parmsString', '', NULL),
+	(21, '2022-06-29 00:22:54', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', NULL),
+	(22, '2022-06-29 00:31:39', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', '127.0.0.1'),
+	(23, '2022-06-29 00:31:43', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', '127.0.0.1'),
+	(24, '2022-06-29 09:38:16', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', '127.0.0.1'),
+	(25, '2022-06-29 09:38:18', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', '127.0.0.1'),
+	(26, '2022-06-29 09:38:20', 15.000000, -4.020000, 1.835000, 0.160000, -1.310000, -0.550000, -4.160000, 'Innenstadt-Ost', 0, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', '127.0.0.1'),
+	(27, '2022-06-29 09:39:54', 60.000000, -16.080000, 7.340000, 0.640000, -5.240000, -2.200000, -16.640000, 'Innenstadt-Ost', 3, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', '127.0.0.1'),
+	(28, '2022-06-29 09:40:02', 45.000000, -12.060000, 5.505000, 0.480000, -3.930000, -1.650000, -12.480000, 'Innenstadt-Ost', 2, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', '127.0.0.1'),
+	(29, '2022-06-29 09:44:06', 120.000000, -32.160000, 14.680000, 1.280000, -10.480000, -4.400000, -33.280000, 'Innenstadt-West', 7, '{"sector1":{"value":1},"sector2":{"value":2},"sector3":{"value":3},"sector4":{"value":4},"sector5":{"value":5}}', '', '127.0.0.1');
 /*!40000 ALTER TABLE `submissions` ENABLE KEYS */;
 
 -- Exportiere Struktur von Tabelle okl.users
@@ -113,13 +129,39 @@ CREATE TABLE IF NOT EXISTS `users` (
   `hash` tinytext NOT NULL,
   UNIQUE KEY `hash` (`hash`(250)) USING BTREE,
   KEY `Schlüssel 1` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
 
--- Exportiere Daten aus Tabelle okl.users: ~1 rows (ungefähr)
+-- Exportiere Daten aus Tabelle okl.users: ~27 rows (ungefähr)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `date`, `hash`) VALUES
-	(1, '2022-06-27 15:50:01', '123');
+	(1, '2022-06-27 15:50:01', '123'),
+	(2, '2022-06-28 23:28:26', '62bb727ae342c'),
+	(3, '2022-06-28 23:28:45', '62bb728d7f426'),
+	(4, '2022-06-28 23:28:54', '62bb7296537bf'),
+	(5, '2022-06-28 23:28:57', '62bb7299f2d71'),
+	(6, '2022-06-28 23:29:26', '62bb72b63524b'),
+	(7, '2022-06-28 23:44:02', '62bb76222b449'),
+	(8, '2022-06-28 23:54:38', '62bb789e06932'),
+	(9, '2022-06-28 23:55:06', '62bb78ba11f1c'),
+	(10, '2022-06-29 00:00:10', '62bb79ea2364e'),
+	(11, '2022-06-29 00:01:33', '62bb7a3d0d2eb'),
+	(14, '2022-06-29 00:16:41', '62bb7dc9de5bc'),
+	(15, '2022-06-29 00:16:46', '62bb7dce5f421'),
+	(16, '2022-06-29 00:17:04', '62bb7de06dfc4'),
+	(17, '2022-06-29 00:21:22', '62bb7ee20eb88'),
+	(18, '2022-06-29 00:21:26', '62bb7ee65ca4a'),
+	(19, '2022-06-29 00:21:40', '62bb7ef4b56de'),
+	(20, '2022-06-29 00:21:45', '62bb7ef99b33c'),
+	(21, '2022-06-29 00:22:54', '62bb7f3e374f1'),
+	(22, '2022-06-29 00:31:39', '62bb814bdc3f6'),
+	(23, '2022-06-29 00:31:43', '62bb814f6b276'),
+	(24, '2022-06-29 09:38:16', '62bc016834117'),
+	(25, '2022-06-29 09:38:18', '62bc016adb62b'),
+	(26, '2022-06-29 09:38:20', '62bc016c7d152'),
+	(27, '2022-06-29 09:39:54', '62bc01ca78ac9'),
+	(28, '2022-06-29 09:40:02', '62bc01d29350f'),
+	(29, '2022-06-29 09:44:06', '62bc02c690010');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

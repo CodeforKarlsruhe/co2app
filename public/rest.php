@@ -193,6 +193,54 @@ function removeSubmission($pdo,$location,$sectors,$id) {
   // update function
   // --------------------------------------------------
   function updateDash() {
+	/*
+	query options with aggregation
+		$query = $pdo->prepare('SELECT count(*) as cnt, sum(mult) as mult FROM submissions where location = ?');
+		$query->execute(["Innenstadt-Ost"]);
+		$result = $query->fetchAll();
+		print_r($result);
+		Array
+			(
+				[0] => Array
+					(
+						[cnt] => 1
+						[mult] => 7
+					)
+
+			)
+
+	with grouping. note the fetch_group | ...
+
+			$query = $pdo->prepare('SELECT location, count(*) as cnt, sum(mult) as mult FROM submissions group by location');
+			$query->execute();
+			$result = $query->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+			print_r($result);
+				
+			Array
+			(
+				[Innenstadt-Ost] => Array
+					(
+						[0] => Array
+							(
+								[cnt] => 15
+								[mult] => 5
+							)
+
+					)
+
+				[Innenstadt-West] => Array
+					(
+						[0] => Array
+							(
+								[cnt] => 1
+								[mult] => 7
+							)
+
+					)
+
+			)
+
+*/
 	mlog("updateDash");
 
 }
@@ -263,10 +311,33 @@ switch ($meth) {
 		$pdo = openConnection();
 
 		// verify
+		// district must exist
+		try {
+			$query = $pdo->prepare('SELECT code1,code2 FROM defaults');
+		} catch (PDOException $e) {
+			mlog("PDO error " . $e->getMessage());
+			header('HTTP/1.0 501 Server Error');
+			die();
+		}
+
+		try {
+			$query->execute();
+			$result = $query->fetchAll();
+			if (count($result) < 1) {
+				mlog("Invalid location");
+				header('HTTP/1.0 501 Server Error');
+				die();
+			}
+		} catch (PDOException $e) {
+			mlog("PDO error " . $e->getMessage());
+			header('HTTP/1.0 501 Server Error');
+			die();
+		}
+
 		// if code present, must match code1 or code2, else return invalid code
 		if ($requestCode > "") {
 			try {
-				$queryCodes = $pdo->prepare('SELECT code1,code2 FROM defaults');
+				$query = $pdo->prepare('SELECT code1,code2 FROM defaults');
 			} catch (PDOException $e) {
 				mlog("PDO error " . $e->getMessage());
 				header('HTTP/1.0 501 Server Error');
@@ -274,22 +345,23 @@ switch ($meth) {
 			}
 
 			try {
-				$queryCodes->execute();
-				$codes = $queryCodes->fetchAll();
-				if (count($codes) < 1) {
+				$query->execute();
+				$result = $query->fetchAll();
+				if (count($result) < 1) {
 					mlog("Missing codes in DB");
 					header('HTTP/1.0 501 Server Error');
 					die();
 				}
-				if (($requestCode != $codes[0]["code1"]) && ($requestCode != $codes[0]["code2"])) {
+				if (($requestCode != $result[0]["code1"]) && ($requestCode != $result[0]["code2"])) {
 					mlog("Invalid code: " . $requestCode);
-					mlog($codes[0]["code1"]);
+					mlog($result[0]["code1"]);
 					$result = array("id" => "","msg" => REASON["KEY"],"status" => 0);
 					break;
 				}
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
+				mlog("PDO error " . $e->getMessage());
 				header('HTTP/1.0 501 Server Error');
-				die("Error: " . print_r($queryCodes->errorInfo(), true));
+				die();
 			}
 
 		}		
@@ -297,7 +369,7 @@ switch ($meth) {
 		// if id present, must match existing id. if exist, update, else insert
 		if ($requestId > "") {
 			try {
-				$queryId = $pdo->prepare('SELECT id FROM users where hash = ?');
+				$query = $pdo->prepare('SELECT id FROM users where hash = ?');
 			} catch (PDOException $e) {
 				mlog("PDO error " . $e->getMessage());
 				header('HTTP/1.0 501 Server Error');
@@ -305,24 +377,25 @@ switch ($meth) {
 			}
 
 			try {
-				$queryId->execute([$requestId]);
-				$ids = $queryId->fetchAll();
-				if (count($ids) == 0) {
+				$query->execute([$requestId]);
+				$result = $query->fetchAll();
+				if (count($result) == 0) {
 					mlog("Invalid user " . $requestId);
 					$result = array("id" => "","msg" => REASON["USER"],"status" => 0);
 					break;
 				}
-				mlog("Users exists " . $ids[0]["hash"]);
+				mlog("Users exists " . $result[0]["hash"]);
 				// remove submission for this user
-				if (!removeSubmission($pdo,$location,$sectors,$ids[0]["id"])){
+				if (!removeSubmission($pdo,$location,$sectors,$result[0]["id"])){
 					mlog("Removal failed");
 					header('HTTP/1.0 501 Server Error');
 					die();
 				}
 
-			} catch (Exception $e) {
+			} catch (PDOException $e) {
+				mlog("PDO error " . $e->getMessage());
 				header('HTTP/1.0 501 Server Error');
-				die("Error: " . print_r($queryCodes->errorInfo(), true));
+				die();
 			}
 		}		
 
