@@ -313,7 +313,7 @@ switch ($meth) {
 		// verify
 		// district must exist
 		try {
-			$query = $pdo->prepare('SELECT code1,code2 FROM defaults');
+			$query = $pdo->prepare('SELECT * FROM districts where name = ?');
 		} catch (PDOException $e) {
 			mlog("PDO error " . $e->getMessage());
 			header('HTTP/1.0 501 Server Error');
@@ -321,7 +321,7 @@ switch ($meth) {
 		}
 
 		try {
-			$query->execute();
+			$query->execute([$location["district"]]);
 			$result = $query->fetchAll();
 			if (count($result) < 1) {
 				mlog("Invalid location");
