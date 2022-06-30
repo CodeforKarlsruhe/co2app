@@ -146,7 +146,7 @@
             <ion-row>
             <ion-col  size="6">
             <ion-item>
-            <ion-label>EE</ion-label>
+            <ion-label class="check">EE</ion-label>
             <ion-icon src="/img/emoji/fire_emoji_u1f525.svg" size="normal" ></ion-icon>
             <ion-checkbox slot="end" 
               :modelValue="sect1.renew"
@@ -157,7 +157,7 @@
             </ion-col>
             <ion-col  size="6">
             <ion-item>
-            <ion-label>Öko</ion-label>
+            <ion-label class="check">Öko</ion-label>
             <ion-icon src="/img/emoji/bulb_emoji_u1f4a1.svg" size="normal" ></ion-icon>
             <ion-checkbox slot="end" 
               :modelValue="sect1.eco"
@@ -261,7 +261,7 @@
             <ion-row>
             <ion-col  size="12">
             <ion-item>
-            <ion-label>Grünes Konto</ion-label>
+            <ion-label class="check">Grünes Konto</ion-label>
             <ion-icon src="/img/emoji/stock_emoji_u1f4c8.svg" size="normal" ></ion-icon>
             <ion-checkbox slot="end" 
               :modelValue="sect4.stock"
@@ -973,6 +973,9 @@ ion-card-content p {
   font-size: 1rem;
 }
 
+.check  {
+  font-size: 20px;
+}
 
 .sector {
   border-bottom: solid 2px;
