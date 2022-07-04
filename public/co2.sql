@@ -12,6 +12,12 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+
+-- Exportiere Datenbank Struktur für okl
+DROP DATABASE IF EXISTS `okl`;
+CREATE DATABASE IF NOT EXISTS `okl` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `okl`;
+
 -- Exportiere Struktur von Tabelle okl.balance
 DROP TABLE IF EXISTS `balance`;
 CREATE TABLE IF NOT EXISTS `balance` (
@@ -20,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `balance` (
   `sector3` decimal(20,6) NOT NULL DEFAULT 1.690000,
   `sector4` decimal(20,6) NOT NULL DEFAULT 3.450000,
   `sector5` decimal(20,6) NOT NULL DEFAULT 0.840000
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle okl.balance: ~0 rows (ungefähr)
 DELETE FROM `balance`;
@@ -41,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `defaults` (
   `sector5` decimal(20,6) NOT NULL DEFAULT 0.000000,
   `code1` tinytext NOT NULL,
   `code2` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle okl.defaults: ~0 rows (ungefähr)
 DELETE FROM `defaults`;
@@ -59,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `districts` (
   `mults` int(11) NOT NULL DEFAULT 0,
   `co2total` decimal(20,6) NOT NULL DEFAULT 10.980000,
   `savingTotal` decimal(20,6) NOT NULL DEFAULT 0.000000
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Exportiere Daten aus Tabelle okl.districts: ~27 rows (ungefähr)
 DELETE FROM `districts`;
@@ -113,9 +119,9 @@ CREATE TABLE IF NOT EXISTS `submissions` (
   `remote` text DEFAULT NULL,
   KEY `FK__users` (`user`),
   CONSTRAINT `FK__users` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='savings,sector1-5 : computed values for (1 + mult)';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='savings,sector1-5 : computed values for (1 + mult)';
 
--- Exportiere Daten aus Tabelle okl.submissions: ~84 rows (ungefähr)
+-- Exportiere Daten aus Tabelle okl.submissions: ~0 rows (ungefähr)
 DELETE FROM `submissions`;
 /*!40000 ALTER TABLE `submissions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `submissions` ENABLE KEYS */;
@@ -128,9 +134,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `hash` tinytext NOT NULL,
   UNIQUE KEY `hash` (`hash`(150)) USING BTREE,
   KEY `Schlüssel 1` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 
--- Exportiere Daten aus Tabelle okl.users: ~94 rows (ungefähr)
+-- Exportiere Daten aus Tabelle okl.users: ~0 rows (ungefähr)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `date`, `hash`) VALUES
