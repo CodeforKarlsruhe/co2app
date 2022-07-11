@@ -5,7 +5,8 @@ Version used at [Bunte Nacht, 1.7.2022](https://ok-lab-karlsruhe.de/projekte/bun
 
 With **SIMPLE** backend, see [rest.php](public/rest.php)
 
-Cooperates with *co2dash*
+Cooperates with [co2dash](https://github.com/CodeforKarlsruhe/co2dash) 
+
 
 ## Demo
 See [here](https://co2app.ok-lab-karlsruhe.de/)
