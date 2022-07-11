@@ -349,7 +349,8 @@
     
       <ion-card-footer>
       <ion-button expand="block" class="submit" @click="submit">Abschicken</ion-button>
-      <ion-button expand="block" fill="outline" class="routelink" href="https://www.karlsruhe.de/impressum.de">Impressum</ion-button>
+
+      <ion-button expand="block" fill="outline" class="routelink" href="https://ok-lab-karlsruhe.de/impressum/">Impressum</ion-button>
 
       <ion-row>
       <ion-col size="12">
