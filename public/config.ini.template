@@ -1,0 +1,14 @@
+[db]
+dbhost = host
+dbname= db
+dbuser = user
+dbpass = pwd
+
+[codes]
+cprefix = "123"
+
+[user]
+uprefix = "456"
+
+[qrcode]
+qprefix = "abc"
