@@ -5,6 +5,10 @@ Version used at [Bunte Nacht, 1.7.2022](https://ok-lab-karlsruhe.de/projekte/bun
 
 With **SIMPLE** backend, see [rest.php](public/rest.php)
 
+Backend requires config.ini, see [config.ini.template](public/config.ini.template) and mysql initialisation, see 
+[co.sql](public/co2.sql)
+
+
 Cooperates with [co2dash](https://github.com/CodeforKarlsruhe/co2dash) 
 
 
