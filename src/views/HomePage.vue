@@ -11,12 +11,12 @@
     <ion-header class="topHeader">
       <ion-grid>
         <ion-row>
-          <ion-col size="7">
+          <ion-col lg="6" md="7" sm="5">
             <ion-img src="/img/kalogo.svg" class="logo"></ion-img>
           </ion-col>
-          <ion-col size="5">
+          <ion-col lg="6" md="5" sm="7">
             <div class="headlineContainer">
-              <span class="headline">CO2App</span>
+              <span class="headline">CO<sub>2</sub> Runter: App</span>
             </div>
           </ion-col>
         </ion-row>
@@ -34,15 +34,15 @@
     
     <ion-card>
       <ion-card-header>
-        <ion-card-title>CO2 Runter: Mein Beitrag für KA</ion-card-title>
+        <ion-card-title>CO<sub>2</sub> Runter: Mein Beitrag für KA</ion-card-title>
         <ion-card-subtitle>Mitmach-App</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content>
-          Wie viel CO2 kann ich durch einen veränderten Lebensstil einsparen und 
+          Wie viel CO<sub>2</sub> kann ich durch einen veränderten Lebensstil einsparen und 
           wie viel macht es in meinem Stadtteil aus, wenn ich noch andere in meinem Umfeld davon überzeuge? 
           <p>
-          Die zwei Aspekte zeigt spielerisch diese App, die auf dem persönlichen CO2 Rechner 
+          Die zwei Aspekte zeigt spielerisch diese App, die auf dem persönlichen CO<sub>2</sub> Rechner 
           des <a href="https://uba.co2-rechner.de/" target=_blank>Umweltbundesamtes (UBA)</a> basiert und für diese Aktion vereinfacht wurde.
           </p>
 
@@ -53,10 +53,10 @@
               </ion-item>
               <div class="ion-padding" slot="content">
                 <p>
-                Laut Energiebilanz Karlsruhe 2019 liegt der CO2 Ausstoß bei 7,8t jährlich pro Kopf. 
+                Laut Energiebilanz Karlsruhe 2019 liegt der CO<sub>2</sub> Ausstoß bei 7,8t jährlich pro Kopf. 
                 Die Effekte durch privaten Konsum sind dabei nicht enthalten.
                 Addiert man hier den Grundwert (3,5t) gemäß unserer Vereinfachung des UBA-Modells, 
-                dann erhält man 11,3t CO2. Dies entspricht ungefähr der Grundwert-Summe der CO2APP (11t CO2).
+                dann erhält man 11,3t CO<sub>2</sub>. Dies entspricht ungefähr der Grundwert-Summe der CO<sub>2</sub>APP (11t CO<sub>2</sub>).
                 
                 </p>
                 <p>
@@ -80,7 +80,7 @@
                   </ul>
                 </p>
                 <p>
-                Die verwendeten Daten und Berechnungsmodelle sind an den CO2-Rechner des Umweltbundesamts angeleht und
+                Die verwendeten Daten und Berechnungsmodelle sind an den CO<sub>2</sub>-Rechner des Umweltbundesamts angeleht und
                 wollen die Effekte zeigen, die wir durch sparsamen oder weniger sparsamen Lebensstil erreichen können. 
                 Eine exaktere Berechnung ist ohne weitere Informationen über die persönliche Situation im Einzelfall nicht möglich.
                 Weitere Informationen zum UBA-Modell und den Einsparpotentialen finden sich 
@@ -94,7 +94,7 @@
           Persönliche Maßnahmen für den Klimaschutz werden umso erfolgreicher, wenn wir auch andere Menschen davon überzeugen.
           Geben Sie Ihren Stadtteil an und die Anzahl der Personen, die sie dort als Mitstreiter:Innen gewinnen können 
           und nehmen Sie so an der Klima-Challenge teil. Die aktuellen Ergebnisse sind auf unserem 
-          <a href="https://co2dash.karlsruhe.de" target=_blank>CO2-Dashboard</a> sichtbar.
+          <a href="https://co2dash.karlsruhe.de" target=_blank>CO<sub>2</sub>-Dashboard</a> sichtbar.
           </p>
           <p>
             Im Kanal "Grüne Stadt" der <a href="https://www.karlsruhe.de/b4/stadtverwaltung/karlsruhe-app.de" target=_blank>
@@ -118,7 +118,7 @@
         <ion-text>
             <p>
               Die Wohnungsgröße sowie die Energieträger für
-              Heizung und Strom haben großen Einfluß auf die CO2 Emissionen.
+              Heizung und Strom haben großen Einfluß auf die CO<sub>2</sub> Emissionen.
               Hier können Sie weniger (25m²) oder mehr (75m²) Wohnfläche wählen und 
               als Heizenergieträger erneuerbare Energien (EE) sowie Ökostrom (Öko) angeben.
             </p>
@@ -178,8 +178,8 @@
         </ion-card-header>
         <ion-card-content class="sector">
         <ion-text>
-          <p>Die mobilitätsbedingten CO2 Emissionen können durch den Verzicht auf ein Auto reduziert
-            werden. Viele Flüge (z.B. 1 Transatlantikflug plus 4 europäische Flüge pro Jahr) hingegen produzieren sehr viel CO2.
+          <p>Die mobilitätsbedingten CO<sub>2</sub> Emissionen können durch den Verzicht auf ein Auto reduziert
+            werden. Viele Flüge (z.B. 1 Transatlantikflug plus 4 europäische Flüge pro Jahr) hingegen produzieren sehr viel CO<sub>2</sub>.
           </p>
         </ion-text>
         <ion-segment @ionChange='segmentChanged($event,"s2")'  value="normal">
@@ -206,7 +206,7 @@
         </ion-card-header>
         <ion-card-content class="sector">
         <ion-text>
-          <p>Die Fleischproduktion sorgt für erhebliche CO2 Emissionen. Hier können Sie über Ihre 
+          <p>Die Fleischproduktion sorgt für erhebliche CO<sub>2</sub> Emissionen. Hier können Sie über Ihre 
             Essgewohnheiten Einfluß nehmen.            
           </p>
         </ion-text>
@@ -236,10 +236,10 @@
         </ion-card-header>
         <ion-card-content class="sector">
         <ion-text>
-          <p>Unsere Konsumausgaben sorgen ebenfalls für CO2 Emissionen.
+          <p>Unsere Konsumausgaben sorgen ebenfalls für CO<sub>2</sub> Emissionen.
             Geringere Ausgaben (z.B. 1000€ mtl.) oder hohe Ausgaben (z.B. 4500€ mtl.) haben einen
             deutlichen Effekt. Geldanlagen in klimaschonende anstelle von konverntionellen Produkten ("grünes Konto") 
-            tragen ebenfalls zur CO2 Einsparung bei. 
+            tragen ebenfalls zur CO<sub>2</sub> Einsparung bei. 
             </p>
         </ion-text>
         <ion-segment @ionChange='segmentChanged($event,"s4")'  value="normal">
@@ -313,7 +313,7 @@
         <ion-card-content>
         <ion-text>
           <p>Können Sie weitere Menschen in Ihrem Stadtteil davon überzeugen,
-          genauso viel CO2-Einsparungen zu erreichen? Dann geben Sie hier eine Zahl ein. 
+          genauso viel CO<sub>2</sub>-Einsparungen zu erreichen? Dann geben Sie hier eine Zahl ein. 
           </p>
         </ion-text>
           <ion-item>
@@ -344,7 +344,7 @@
         <ion-card-header>
         <ion-card-title>Mitmachen</ion-card-title>
         Senden Sie Ihre Angaben ab für <em>
-        CO2 runter – mein Beitrag für KA</em>
+        CO<sub>2</sub> runter – mein Beitrag für KA</em>
         </ion-card-header>
     
       <ion-card-footer>
@@ -396,14 +396,14 @@
 
     <ion-footer :translucent="true">
       <ion-item>
-      <ion-label class="totalco2">Aktuell: {{ co2total }} t CO2</ion-label>
+      <ion-label class="totalco2">Aktuell: {{ co2total }} t CO<sub>2</sub></ion-label>
       </ion-item>
     </ion-footer>
     <!--
     <ion-footer :translucent="true">
       <ion-toolbar>
       <ion-item>
-      <ion-label class="totalco2" slot="start">Aktuell: {{ co2total }} t CO2</ion-label>
+      <ion-label class="totalco2" slot="start">Aktuell: {{ co2total }} t CO<sub>2</sub></ion-label>
       <ion-button slot="end" expand="block" fill="outline" class="routelink" router-link="/imprint">Impressum</ion-button>
       </ion-item>
       </ion-toolbar>
@@ -919,7 +919,7 @@ export default defineComponent({
   justify-content: left;
   align-items: flex-end;
   height: 100%;
-  font-size: 2rem;
+  font-size: 1.9rem;
   font-weight: bold;
 }
 .headline {
@@ -996,6 +996,12 @@ ion-card-content p {
 @media only screen and (max-width: 480px) {
 ion-item {
   --padding-start: 5px;
+  }
+  .logo {
+    height: 2rem;
+  }
+  .headline {
+    font-size: 1.3rem;
   }
 }
 
