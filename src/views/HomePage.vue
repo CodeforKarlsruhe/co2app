@@ -9,24 +9,12 @@
     -->
     <!-- -->
     <ion-header class="topHeader">
-      <ion-grid>
-        <ion-row>
-          <ion-col lg="7" md="6" sm="4">
-            <ion-img src="/img/kalogo.svg" class="logo"></ion-img>
-          </ion-col>
-          <ion-col lg="5" md="6" sm="8">
-            <div class="headlineContainer">
-              <span class="headline">CO<sub>2</sub> Runter: App</span>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <!--      
-      <ion-item>
-      <ion-img src="/img/kalogo.svg" class="logo" slot="start"></ion-img>
-      <ion-title slot="start">CO2App</ion-title>
-      </ion-item>
-      -->
+        <ion-item class="headline-container">
+          <ion-thumbnail class="logo" slot="start">
+            <img alt="Logo" src="/img/kalogo.svg" />
+          </ion-thumbnail>
+          <ion-label class="headline">CO<sub>2</sub> runter: App</ion-label>
+        </ion-item>
     </ion-header>
 
 
@@ -34,7 +22,7 @@
     
     <ion-card>
       <ion-card-header>
-        <ion-card-title>CO<sub>2</sub> Runter: Mein Beitrag für KA</ion-card-title>
+        <ion-card-title>CO<sub>2</sub> runter - Mein Beitrag für KA</ion-card-title>
         <ion-card-subtitle>Mitmach-App</ion-card-subtitle>
         </ion-card-header>
 
@@ -433,7 +421,7 @@ import { IonContent, IonHeader, IonFooter, IonPage,
   IonSegment, IonSegmentButton,
   IonIcon,
   IonSelect,IonSelectOption,
-
+  IonThumbnail,
  } from '@ionic/vue';
 
 import { defineComponent } from 'vue';
@@ -484,7 +472,7 @@ export default defineComponent({
     IonButton,
     IonAccordion,IonAccordionGroup,
     IonSegment, IonSegmentButton,
-    IonIcon,
+    IonIcon,IonThumbnail,
     IonSelect,IonSelectOption,
 
   },
@@ -905,7 +893,6 @@ export default defineComponent({
 */
 .logo {
   height: 3rem;
-  width: 100%;
   padding: 0;
   object-position: left;
 }
@@ -919,16 +906,20 @@ export default defineComponent({
   */
 }
 
-.headlineContainer {
-  display: flex;
-  justify-content: left;
-  align-items: flex-end;
-  height: 100%;
-  font-size: 1.9rem;
-  font-weight: bold;
+.headline-container {
+  --inner-border-width: 0;
 }
+
 .headline {
+  font-size: 2rem;
+  font-weight: bold;
   margin-bottom: -.4rem;
+  white-space: break-spaces;
+}
+
+ion-thumbnail {
+  width: unset;
+  height: unset;
 }
 
 
