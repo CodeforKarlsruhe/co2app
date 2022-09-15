@@ -11,10 +11,10 @@
     <ion-header class="topHeader">
       <ion-grid>
         <ion-row>
-          <ion-col lg="6" md="7" sm="5">
+          <ion-col lg="7" md="6" sm="4">
             <ion-img src="/img/kalogo.svg" class="logo"></ion-img>
           </ion-col>
-          <ion-col lg="6" md="5" sm="7">
+          <ion-col lg="5" md="6" sm="8">
             <div class="headlineContainer">
               <span class="headline">CO<sub>2</sub> Runter: App</span>
             </div>
@@ -349,8 +349,13 @@
     
       <ion-card-footer>
       <ion-button expand="block" class="submit" @click="submit">Abschicken</ion-button>
-
+      <!--
       <ion-button expand="block" fill="outline" class="routelink" href="https://ok-lab-karlsruhe.de/impressum/">Impressum</ion-button>
+      -->
+
+      <!--
+      -->
+      <ion-button expand="block" fill="outline" class="routelink" href="https://www.karlsruhe.de/impressum">Impressum</ion-button>
 
       <ion-row>
       <ion-col size="12">
@@ -413,7 +418,7 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonFooter, IonPage, IonTitle, 
+import { IonContent, IonHeader, IonFooter, IonPage,  
   //IonToolbar, 
   IonImg,
   IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent, 

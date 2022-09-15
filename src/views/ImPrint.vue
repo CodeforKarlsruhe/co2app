@@ -1,15 +1,18 @@
 <template>
   <ion-page>
-    <!--    
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Blank</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    -->
     <ion-header class="topHeader">
-      <ion-title>CO2App</ion-title>
-      <ion-img src="/img/logo.svg" class="logo"></ion-img>
+      <ion-grid>
+        <ion-row>
+          <ion-col lg="5" md="6" sm="5">
+            <ion-img src="/img/kalogo.svg" class="logo"></ion-img>
+          </ion-col>
+          <ion-col lg="7" md="6" sm="7">
+            <div class="headlineContainer">
+              <span class="headline">CO<sub>2</sub> Runter: App</span>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-header>
 
    
@@ -79,7 +82,8 @@
 
 <script lang="ts">
 import { IonContent, IonHeader, IonFooter, IonPage, 
-IonTitle, IonToolbar, IonImg, 
+IonToolbar, 
+IonImg, 
 IonButton,
 IonGrid, IonRow, IonCol,
 IonCard,
@@ -93,7 +97,6 @@ export default defineComponent({
     IonContent,
     IonHeader,
     IonPage,
-    IonTitle,
     IonToolbar,
     IonFooter,
     IonImg,
@@ -133,32 +136,128 @@ export default defineComponent({
   text-decoration: none;
 }
 
-.logo {
-  height: 4rem;
-}
-
-.routelink {
+/* custom */
+.routelink, .submit {
   margin-left: 20%;
   margin-right: 20%;
 }
 
+
 .topHeader {
   background: white;
 }
-
-ion-col {
-  height: 50px;
-  background: grey;
-  margin:5px;
+/*
+.logo {
+  height: 4rem;
+  max-width: 40%;
+  padding: .5rem 1rem .5rem .5rem;
+}
+*/
+.logo {
+  height: 3rem;
+  width: 100%;
+  padding: 0;
+  object-position: left;
 }
 
-/*
-breakpoints, https://ionicframework.com/docs/layout/grid
-Name	Value	Width Prefix	Offset Prefix	Push Prefix	Pull Prefix	Description
-xs	0	size-	offset-	push-	pull-	Set columns when (min-width: 0)
-sm	576px	size-sm-	offset-sm-	push-sm-	pull-sm-	Set columns when (min-width: 576px)
-md	768px	size-md-	offset-md-	push-md-	pull-md-	Set columns when (min-width: 768px)
-lg	992px	size-lg-	offset-lg-	push-lg-	pull-lg-	Set columns when (min-width: 992px)
-xl	1200px	size-xl-	offset-xl-	push-xl-	pull-xl-	Set columns when (min-width: 1200px)
-*/
+.appdesign {
+  height: 3rem;
+  /*
+  width: 100%;
+  padding: 0;
+  object-position: left;
+  */
+}
+
+.headlineContainer {
+  display: flex;
+  justify-content: left;
+  align-items: flex-end;
+  height: 100%;
+  font-size: 1.9rem;
+  font-weight: bold;
+}
+.headline {
+  margin-bottom: -.4rem;
+}
+
+
+.topHeader1 {
+  background: white;
+  position:relative;
+}
+.logo1 {
+  position:absolute;
+  top:0;
+  left:0;
+  height: 4rem;
+  padding: .5rem 2rem .5rem 2rem;
+}
+
+/* we can style boxes like so */
+ion-checkbox {
+  --border-width: 4px;
+}
+
+/* segments */
+ion-content ion-segment {
+  margin: 5px 0;
+}
+
+ion-segment-button {
+  --background: #eee;
+  --background-checked: #00ff00;
+  color: #333;
+  font-size: 1rem;
+}
+
+ion-card {
+  color: #333;
+  font-size: 1rem;
+}
+ion-card-subtitle {
+  color: #333;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+ion-card-content {
+  font-size: 1rem;
+}
+
+ion-card-content p {
+  font-size: 1rem;
+}
+
+.check  {
+  font-size: 20px;
+}
+
+.sector {
+  border-bottom: solid 2px;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+/* smaller content on large screen */
+@media only screen and (min-width: 992px) {
+  .card-md {
+    max-width: 960px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
+
+/* smaller padding on small screen */
+@media only screen and (max-width: 480px) {
+ion-item {
+  --padding-start: 5px;
+  }
+  .logo {
+    height: 2rem;
+  }
+  .headline {
+    font-size: 1.3rem;
+  }
+}
+
 </style>
