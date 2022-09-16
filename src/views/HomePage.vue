@@ -884,27 +884,14 @@ export default defineComponent({
 .topHeader {
   background: white;
 }
-/*
-.logo {
-  height: 4rem;
-  max-width: 40%;
-  padding: .5rem 1rem .5rem .5rem;
-}
-*/
+
+
 .logo {
   height: 3rem;
   padding: 0;
   object-position: left;
 }
 
-.appdesign {
-  height: 3rem;
-  /*
-  width: 100%;
-  padding: 0;
-  object-position: left;
-  */
-}
 
 .headline-container {
   --inner-border-width: 0;
@@ -922,17 +909,13 @@ ion-thumbnail {
   height: unset;
 }
 
-
-.topHeader1 {
-  background: white;
-  position:relative;
-}
-.logo1 {
-  position:absolute;
-  top:0;
-  left:0;
-  height: 4rem;
-  padding: .5rem 2rem .5rem 2rem;
+.appdesign {
+  height: 3rem;
+  /*
+  width: 100%;
+  padding: 0;
+  object-position: left;
+  */
 }
 
 /* we can style boxes like so */
@@ -989,17 +972,44 @@ ion-card-content p {
 }
 
 /* smaller padding on small screen */
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 599px) {
 ion-item {
   --padding-start: 5px;
   }
   .logo {
-    height: 2rem;
+    height: 1.5rem;
   }
   .headline {
     font-size: 1.3rem;
   }
 }
+
+/* smaller padding on small screen */
+@media only screen and (max-width: 399px) {
+  .logo {
+    height: 1.4rem;
+  }
+  .headline {
+    font-size: 1.1rem;
+  }
+}
+
+
+
+/* smaller padding on small screen */
+/*
+@media only screen and (max-width: 480px) {
+ion-item {
+  --padding-start: 5px;
+  }
+  .logo {
+    height: 1.5rem;
+  }
+  .headline {
+    font-size: 1.3rem;
+  }
+}
+*/
 
 /* make main content transparent */
 ion-content.onepnt5 { --background: transparent;}
