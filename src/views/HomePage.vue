@@ -112,6 +112,7 @@
             </p>
         </ion-text>
         <ion-segment @ionChange='segmentChanged($event,"s1")'  value="normal">
+
             <ion-segment-button value="besser" layout="icon-bottom">
               <!--ion-icon size="small" :icon="cameraOutline"></ion-icon-->
               <ion-icon src="/img/emoji/house_emoji_u1f3e0.svg" size="small" ></ion-icon>
